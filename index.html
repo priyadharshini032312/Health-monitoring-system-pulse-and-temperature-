@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VitalCare</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body{
+    height:100vh;
+    background: url('ui.jpeg') no-repeat center center/cover;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+}
+
+
+body::before{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:linear-gradient(to right, rgba(0,0,0,0.75), rgba(0,0,0,0.45));
+    z-index:0;
+}
+
+
+header{
+    width:100%;
+    padding:20px 60px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:relative;
+    z-index:1;
+    backdrop-filter: blur(6px);
+}
+
+.logo{
+    color:#00e6ac;
+    font-size:28px;   
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:30px;
+    font-weight:500;
+    transition:0.3s;
+    font-size:16px;
+}
+
+nav a:hover{
+    color:#00e6ac;
+}
+
+
+.container{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    position:relative;
+    z-index:1;
+    text-align:center;
+}
+
+.app-name{
+    color:white;
+    font-size:48px;
+    font-weight:bold;
+    margin-bottom:10px;
+    letter-spacing:1px;
+}
+
+
+.tagline{
+    color:#dfe6e9;
+    font-size:18px;
+    margin-bottom:30px;
+    font-weight:300;
+    letter-spacing:1px;
+}
+
+
+.login-box{
+    background:rgba(255,255,255,0.15);
+    padding:40px;
+    width:360px;
+    border-radius:15px;
+    backdrop-filter:blur(15px);
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    transition:0.4s;
+}
+
+.login-box:hover{
+    transform:translateY(-8px);
+}
+
+.login-box input{
+    width:100%;
+    padding:12px;
+    margin:12px 0;
+    border-radius:8px;
+    border:none;
+    outline:none;
+}
+
+.login-box button{
+    width:100%;
+    padding:12px;
+    background:#00b894;
+    border:none;
+    border-radius:8px;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.login-box button:hover{
+    background:#019875;
+    transform:scale(1.05);
+}
+
+.links{
+    margin-top:15px;
+}
+
+.links a{
+    color:white;
+    text-decoration:none;
+    margin:0 8px;
+    font-size:14px;
+}
+
+.links a:hover{
+    text-decoration:underline;
+}
+
+
+footer{
+    text-align:center;
+    padding:15px;
+    color:white;
+    background:rgba(0,0,0,0.6);
+    position:relative;
+    z-index:1;
+}
+
+footer span{
+    color:#00e6ac;
+    font-weight:bold;
+}
+
+@media(max-width:480px){
+    .login-box{
+        width:90%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Health Monitoring System</div>
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="app-name">VitalCare</div>
+    <div class="tagline">Smart Health Monitoring for a Better Tomorrow</div>
+
+    <div class="login-box">
+        <form onsubmit="return loginUser()">
+            <input type="email" id="email" placeholder="Enter Email" required>
+            <input type="password" id="password" placeholder="Enter Password" required>
+            <button type="submit">Login</button>
+
+            <div class="links">
+                <a href="signup.html">Sign Up</a> |
+                <a href="forgot.html">Forgot Password?</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer>
+    © 2026 <span> VitalCare Health Monitoring System</span> | All Rights Reserved
+</footer>
+
+<script>
+function loginUser() {
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    let storedEmail = localStorage.getItem("userEmail");
+    let storedPassword = localStorage.getItem("userPassword");
+
+    if (!storedEmail) {
+        alert("You are a new user. Please register first.");
+        window.location.href = "signup.html";
+        return false;
+    }
+
+    if (email === storedEmail && password === storedPassword) {
+        alert("Login Successful!");
+        window.location.href = "patient.html";
+        return false;
+    } else {
+        alert("Invalid Credentials!");
+        return false;
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Select Parameter</title>
+<style>
+body{
+    font-family:Segoe UI;
+    margin:0;
+    background:linear-gradient(to right,#1d4350,#a43931);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+.container{
+    background:white;
+    padding:40px;
+    width:450px;
+    border-radius:15px;
+    text-align:center;
+}
+button{
+    width:45%;
+    padding:15px;
+    margin:10px;
+    border:none;
+    border-radius:10px;
+    background:#0984e3;
+    color:white;
+    cursor:pointer;
+}
+button:hover{
+    background:#0652DD;
+}
+.next{
+    margin-top:20px;
+    background:#00b894;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>Select Parameter</h2>
+
+<button onclick="selectPage()">Blood Pressure</button>
+<button onclick="selectPage()">Heart Rate</button>
+<button onclick="selectPage()">BMI</button>
+<button onclick="selectPage()">Diabetes</button>
+<button onclick="selectPage()">Temperature</button>
+<button onclick="selectPage()">Steps Count</button>
+
+<br>
+<button class="next" onclick="selectPage()">Next</button>
+
+</div>
+
+<script>
+function selectPage(){
+    window.location.href="result.html";
+}
+</script>
+
+</body>
+</html>

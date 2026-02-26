@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Patient Details</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    /* Background Image + Overlay */
+    background:
+        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+        url("ui.jpeg");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+/* Glass Card */
+.container{
+    width:450px;
+    padding:40px;
+    border-radius:20px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    color:white;
+    animation: fadeIn 1s ease-in-out;
+}
+
+h2{
+    text-align:center;
+    margin-bottom:30px;
+    font-weight:600;
+    letter-spacing:1px;
+}
+
+/* Input Group */
+.input-group{
+    position:relative;
+    margin-bottom:25px;
+}
+
+.input-group input,
+.input-group textarea{
+    width:100%;
+    padding:14px 14px 14px 45px;
+    border:none;
+    border-radius:10px;
+    background: rgba(255,255,255,0.2);
+    color:white;
+    font-size:14px;
+    outline:none;
+    transition:0.3s;
+}
+
+.input-group textarea{
+    resize:none;
+    height:80px;
+}
+
+.input-group input:focus,
+.input-group textarea:focus{
+    background: rgba(255,255,255,0.3);
+    box-shadow:0 0 8px #00cec9;
+}
+
+/* Icons */
+.input-group i{
+    position:absolute;
+    top:50%;
+    left:15px;
+    transform:translateY(-50%);
+    color:#00cec9;
+}
+
+/* Button */
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background: linear-gradient(45deg,#00b894,#00cec9);
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.4s;
+}
+
+button:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 15px #00cec9;
+}
+
+/* Animation */
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(20px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+::placeholder{
+    color:rgba(255,255,255,0.8);
+}
+</style>
+
+<!-- Font Awesome Icons -->
+<script src="https://kit.fontawesome.com/4b8bdbdf6a.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+<div class="container">
+<h2>Patient Details</h2>
+
+<form onsubmit="return goNext()">
+
+<div class="input-group">
+<i class="fa fa-user"></i>
+<input type="text" placeholder="Full Name" required>
+</div>
+
+<div class="input-group">
+<i class="fa fa-calendar"></i>
+<input type="number" placeholder="Age" required>
+</div>
+
+<div class="input-group">
+<i class="fa fa-venus-mars"></i>
+<input type="text" placeholder="Gender" required>
+</div>
+
+<div class="input-group">
+<i class="fa fa-phone"></i>
+<input type="text" placeholder="Contact Number" required>
+</div>
+
+<div class="input-group">
+<i class="fa fa-notes-medical"></i>
+<textarea placeholder="Medical History"></textarea>
+</div>
+
+<button type="submit">Next →</button>
+
+</form>
+</div>
+
+<script>
+function goNext(){
+    window.location.href="parameter.html";
+    return false;
+}
+</script>
+
+</body>
+</html>

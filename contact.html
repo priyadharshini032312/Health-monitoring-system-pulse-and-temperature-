@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Contact - VitalCare</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:#f4f8fb;
+}
+
+/* HEADER */
+header{
+    background:#0f2027;
+    color:white;
+    padding:15px 50px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+header h2{
+    color:#00e6ac;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:25px;
+    transition:0.3s;
+}
+
+nav a:hover{
+    color:#00e6ac;
+}
+
+/* HERO */
+.hero{
+    text-align:center;
+    padding:60px 20px;
+    background:linear-gradient(to right,#00b894,#00cec9);
+    color:white;
+}
+
+.hero h1{
+    font-size:38px;
+    margin-bottom:10px;
+}
+
+.hero p{
+    font-size:16px;
+    opacity:0.95;
+}
+
+/* MAIN SECTION */
+.contact-section{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    padding:60px 20px;
+    flex-wrap:wrap;
+}
+
+/* CONTACT INFO */
+.contact-info{
+    background:white;
+    padding:30px;
+    width:320px;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+}
+
+.contact-info h3{
+    color:#00b894;
+    margin-bottom:20px;
+}
+
+.contact-info p{
+    color:#555;
+    margin-bottom:15px;
+    line-height:1.5;
+}
+
+/* FORM */
+.contact-form{
+    background:white;
+    padding:30px;
+    width:360px;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+}
+
+.contact-form h3{
+    color:#00b894;
+    margin-bottom:20px;
+    text-align:center;
+}
+
+input, textarea{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size:14px;
+}
+
+textarea{
+    resize:none;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:#00b894;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#019875;
+    transform:scale(1.03);
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:20px;
+    background:#0f2027;
+    color:white;
+    margin-top:30px;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+    .contact-section{
+        flex-direction:column;
+        align-items:center;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>VitalCare</h2>
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="index.html">Logout</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Contact Us</h1>
+    <p>We are here to help you with your health monitoring needs</p>
+</section>
+
+<section class="contact-section">
+
+    <div class="contact-info">
+        <h3>Get in Touch</h3>
+        <p>📧 <strong>Email:</strong><br> support@vitalcare.com</p>
+        <p>📞 <strong>Phone:</strong><br> +91 98765 43210</p>
+        <p>📍 <strong>Location:</strong><br> Chennai, Tamil Nadu, India</p>
+        <p>⏰ <strong>Support Hours:</strong><br> 24/7 Online Support</p>
+    </div>
+
+    <div class="contact-form">
+        <h3>Send Us a Message</h3>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea rows="4" placeholder="Your Message"></textarea>
+        <button onclick="alert('Message Sent Successfully!')">Send Message</button>
+    </div>
+
+</section>
+
+<footer>
+    © 2026 VitalCare Health Monitoring System | All Rights Reserved
+</footer>
+
+</body>
+</html>

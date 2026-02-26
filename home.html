@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Home - VitalCare</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:#f4f8fb;
+}
+
+/* HEADER */
+header{
+    background:#0f2027;
+    color:white;
+    padding:15px 50px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+header h2{
+    color:#00e6ac;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:25px;
+    transition:0.3s;
+}
+
+nav a:hover{
+    color:#00e6ac;
+}
+
+/* HERO SECTION */
+.hero{
+    text-align:center;
+    padding:60px 20px;
+    background:linear-gradient(to right,#00b894,#00cec9);
+    color:white;
+}
+
+.hero h1{
+    font-size:40px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    font-size:18px;
+}
+
+/* CARDS SECTION */
+.cards{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:30px;
+    padding:50px 20px;
+}
+
+.card{
+    background:white;
+    width:280px;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+    text-align:center;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+.card h3{
+    color:#00b894;
+    margin-bottom:10px;
+}
+
+.card p{
+    font-size:14px;
+    color:#555;
+}
+
+/* BUTTON */
+.action{
+    text-align:center;
+    padding:40px;
+}
+
+.action button{
+    padding:12px 25px;
+    background:#00b894;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.action button:hover{
+    background:#019875;
+    transform:scale(1.05);
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:20px;
+    background:#0f2027;
+    color:white;
+    margin-top:30px;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+    .cards{
+        flex-direction:column;
+        align-items:center;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>VitalCare</h2>
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="index.html">Logout</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Health Monitoring System</h1>
+    <p>Monitor patient details, analyze vital signs, and verify health conditions easily</p>
+</section>
+
+<section class="cards">
+    <div class="card">
+        <h3>🔐 Secure Login</h3>
+        <p>Users can safely log in or sign up using email and password to access the system.</p>
+    </div>
+
+    <div class="card">
+        <h3>🧾 Patient Details</h3>
+        <p>Enter patient information such as name, age, gender, contact, and medical history.</p>
+    </div>
+
+    <div class="card">
+        <h3>❤️ Health Parameters</h3>
+        <p>Record vital data including blood pressure, heart rate, BMI, steps count, and diabetes level.</p>
+    </div>
+
+    <div class="card">
+        <h3>📋 Health Verification</h3>
+        <p>The system analyzes inputs and provides health condition insights and verification.</p>
+    </div>
+</section>
+
+<section class="action">
+    <button onclick="window.location.href='patient.html'">Start Health Monitoring</button>
+</section>
+
+
+<footer>
+    © 2026 VitalCare Health Monitoring System | All Rights Reserved
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>About - VitalCare</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:#f4f8fb;
+}
+
+/* HEADER */
+header{
+    background:#0f2027;
+    color:white;
+    padding:15px 50px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+header h2{
+    color:#00e6ac;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:25px;
+    transition:0.3s;
+}
+
+nav a:hover{
+    color:#00e6ac;
+}
+
+/* HERO */
+.hero{
+    text-align:center;
+    padding:60px 20px;
+    background:linear-gradient(to right,#00b894,#00cec9);
+    color:white;
+}
+
+.hero h1{
+    font-size:38px;
+}
+
+/* CONTENT SECTION */
+.content{
+    max-width:1000px;
+    margin:50px auto;
+    padding:20px;
+    text-align:center;
+}
+
+.content h3{
+    color:#00b894;
+    margin-bottom:15px;
+}
+
+.content p{
+    color:#555;
+    line-height:1.7;
+    margin-bottom:20px;
+}
+
+/* TEAM CARDS */
+.team{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    flex-wrap:wrap;
+    margin-top:40px;
+}
+
+.member{
+    background:white;
+    padding:25px;
+    width:250px;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.member:hover{
+    transform:translateY(-10px);
+}
+
+.member h4{
+    color:#00b894;
+    margin-bottom:8px;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:20px;
+    background:#0f2027;
+    color:white;
+    margin-top:40px;
+}
+
+@media(max-width:768px){
+    .team{
+        flex-direction:column;
+        align-items:center;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>VitalCare</h2>
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="index.html">Logout</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>About Our Health Monitoring System</h1>
+</section>
+
+<section class="content">
+    <h3>System Overview</h3>
+    <p>
+        The Health Monitoring System is designed to collect, analyze, and verify patient health
+        information. It helps users understand their health condition by monitoring vital parameters
+        and presenting meaningful health insights.
+    </p>
+
+    <h3>How the System Works</h3>
+    <p>
+        Users first log in securely, then enter patient details such as name, age, gender, contact,
+        and medical history. The system allows users to input health parameters including blood
+        pressure, heart rate, BMI, sleep count, and diabetes levels. Based on this data, the system
+        analyzes and verifies the overall health status.
+    </p>
+
+    <h3>Key Features</h3>
+    <p>
+        ✔ Secure login and user authentication <br>
+        ✔ Patient detail management <br>
+        ✔ Health parameter monitoring <br>
+        ✔ Disease awareness and verification 
+    </p>
+</section>
+<footer>
+    © 2026 VitalCare Health Monitoring System | All Rights Reserved
+</footer>
+
+</body>
+</html>
