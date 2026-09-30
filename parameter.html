@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Select Parameter</title>
 <style>
 body{
@@ -10,12 +12,13 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    min-height:100vh;
 }
 .container{
     background:white;
     padding:40px;
     width:450px;
+    max-width:92%;
     border-radius:15px;
     text-align:center;
 }
@@ -32,9 +35,58 @@ button{
 button:hover{
     background:#0652DD;
 }
+button.active{
+    background:#0652DD;
+    outline:3px solid #74b9ff;
+}
 .next{
     margin-top:20px;
     background:#00b894;
+}
+
+/* ---------- NEW: input panel + result ---------- */
+#inputBox{
+    display:none;
+    margin-top:15px;
+    text-align:left;
+}
+#inputBox label{
+    display:block;
+    font-size:14px;
+    color:#444;
+    margin:10px 0 4px;
+}
+#inputBox input, #inputBox select{
+    width:100%;
+    padding:11px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
+}
+#checkBtn{
+    width:100%;
+    margin:15px 0 0;
+    background:#e17055;
+}
+#checkBtn:hover{
+    background:#d63031;
+}
+#result{
+    display:none;
+    margin-top:15px;
+    padding:14px;
+    border-radius:10px;
+    font-size:15px;
+    text-align:left;
+    line-height:1.5;
+}
+#result.normal{ background:#e6f9f3; color:#00785c; border:1px solid #00b894; }
+#result.warn  { background:#fff4e0; color:#a35a00; border:1px solid #fdcb6e; }
+#result.danger{ background:#ffeaea; color:#b71c1c; border:1px solid #d63031; }
+.note{
+    font-size:12px;
+    color:#777;
+    margin-top:12px;
 }
 </style>
 </head>
@@ -43,21 +95,226 @@ button:hover{
 <div class="container">
 <h2>Select Parameter</h2>
 
-<button onclick="selectPage()">Blood Pressure</button>
-<button onclick="selectPage()">Heart Rate</button>
-<button onclick="selectPage()">BMI</button>
-<button onclick="selectPage()">Diabetes</button>
-<button onclick="selectPage()">Temperature</button>
-<button onclick="selectPage()">Steps Count</button>
+<!-- CHANGED: each button now passes its parameter name -->
+<button onclick="selectParam('bp', this)">Blood Pressure</button>
+<button onclick="selectParam('hr', this)">Heart Rate</button>
+<button onclick="selectParam('bmi', this)">BMI</button>
+<button onclick="selectParam('sugar', this)">Diabetes</button>
+<button onclick="selectParam('temp', this)">Temperature</button>
+<button onclick="selectParam('steps', this)">Steps Count</button>
+
+<!-- NEW: input fields appear here after a parameter is selected -->
+<div id="inputBox">
+    <div id="fields"></div>
+    <button id="checkBtn" onclick="checkValue()">Check</button>
+</div>
+
+<!-- NEW: normal / abnormal result appears here -->
+<div id="result"></div>
 
 <br>
-<button class="next" onclick="selectPage()">Next</button>
+<!-- CHANGED: Next now goes to result.html only after a check is done -->
+<button class="next" onclick="goNext()">Next</button>
 
+<p class="note">For awareness only. This is not a medical diagnosis.</p>
 </div>
 
 <script>
-function selectPage(){
-    window.location.href="result.html";
+let currentParam = null;
+let lastResult = null;
+
+/* Input fields for each parameter */
+const fieldsConfig = {
+    bp: [
+        {id:"sys", label:"Systolic (upper) mmHg", ph:"e.g. 120"},
+        {id:"dia", label:"Diastolic (lower) mmHg", ph:"e.g. 80"}
+    ],
+    hr: [
+        {id:"bpm", label:"Resting heart rate (beats per minute)", ph:"e.g. 72"}
+    ],
+    bmi: [
+        {id:"wt", label:"Weight (kg)", ph:"e.g. 65"},
+        {id:"ht", label:"Height (cm)", ph:"e.g. 165"}
+    ],
+    sugar: [
+        {id:"glu", label:"Fasting blood sugar (mg/dL)", ph:"e.g. 95"}
+    ],
+    temp: [
+        {id:"tmp", label:"Body temperature", ph:"e.g. 98.6"},
+        {id:"unit", label:"Unit", type:"select", options:["°F","°C"]}
+    ],
+    steps: [
+        {id:"stp", label:"Steps walked today", ph:"e.g. 6000"}
+    ]
+};
+
+const titles = {
+    bp:"Blood Pressure", hr:"Heart Rate", bmi:"BMI",
+    sugar:"Diabetes (Fasting Sugar)", temp:"Temperature", steps:"Steps Count"
+};
+
+/* Called when a parameter button is clicked */
+function selectParam(param, btn){
+    currentParam = param;
+    lastResult = null;
+
+    document.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    let html = "";
+    fieldsConfig[param].forEach(f => {
+        html += `<label for="${f.id}">${f.label}</label>`;
+        if(f.type === "select"){
+            html += `<select id="${f.id}">` +
+                    f.options.map(o => `<option>${o}</option>`).join("") +
+                    `</select>`;
+        } else {
+            html += `<input type="number" step="any" id="${f.id}" placeholder="${f.ph}">`;
+        }
+    });
+
+    document.getElementById("fields").innerHTML = html;
+    document.getElementById("inputBox").style.display = "block";
+    document.getElementById("result").style.display = "none";
+}
+
+function val(id){
+    return parseFloat(document.getElementById(id).value);
+}
+
+/* Show result box + alert if not normal */
+function showResult(status, level, message){
+    // level: "normal" | "warn" | "danger"
+    const box = document.getElementById("result");
+    box.className = level;
+    box.style.display = "block";
+    box.innerHTML = `<b>${status}</b><br>${message}`;
+
+    lastResult = {parameter: titles[currentParam], status: status, message: message, level: level};
+
+    if(level !== "normal"){
+        alert((level === "danger" ? "🚨 " : "⚠️ ") + titles[currentParam] + ": " + status + "\n\n" + message);
+    }
+}
+
+/* Main checking logic */
+function checkValue(){
+    if(!currentParam){
+        alert("Please select a parameter first.");
+        return;
+    }
+
+    if(currentParam === "bp"){
+        const s = val("sys"), d = val("dia");
+        if(isNaN(s) || isNaN(d) || s <= 0 || d <= 0){ alert("Please enter both BP values."); return; }
+
+        if(s > 180 || d > 120){
+            showResult("Hypertensive crisis", "danger", "Very high BP. Get medical help immediately.");
+        } else if(s >= 140 || d >= 90){
+            showResult("High (Stage 2)", "danger", "BP is high. Please consult a doctor.");
+        } else if(s >= 130 || d >= 80){
+            showResult("High (Stage 1)", "warn", "BP is above normal. Monitor regularly and consult a doctor.");
+        } else if(s >= 120){
+            showResult("Elevated", "warn", "Slightly above normal. Reduce salt, exercise, and recheck.");
+        } else if(s < 90 || d < 60){
+            showResult("Low", "warn", "BP is low. Drink fluids, rest, and consult a doctor if you feel dizzy.");
+        } else {
+            showResult("Normal", "normal", "Your blood pressure is in the normal range (about 120/80).");
+        }
+    }
+
+    else if(currentParam === "hr"){
+        const h = val("bpm");
+        if(isNaN(h) || h <= 0){ alert("Please enter heart rate."); return; }
+
+        if(h > 100){
+            showResult("High (Tachycardia)", "danger", "Resting heart rate is above 100 bpm. Consult a doctor.");
+        } else if(h < 60){
+            showResult("Low (Bradycardia)", "warn", "Resting heart rate is below 60 bpm. Consult a doctor if you feel weak or dizzy.");
+        } else {
+            showResult("Normal", "normal", "Normal resting heart rate is 60 to 100 bpm.");
+        }
+    }
+
+    else if(currentParam === "bmi"){
+        const w = val("wt"), hcm = val("ht");
+        if(isNaN(w) || isNaN(hcm) || w <= 0 || hcm <= 0){ alert("Please enter weight and height."); return; }
+
+        const bmi = w / Math.pow(hcm / 100, 2);
+        const b = bmi.toFixed(1);
+
+        if(bmi < 18.5){
+            showResult("Underweight (BMI " + b + ")", "warn", "BMI is below 18.5. Consider a balanced, nutritious diet.");
+        } else if(bmi < 25){
+            showResult("Normal (BMI " + b + ")", "normal", "Healthy weight range (18.5 to 24.9).");
+        } else if(bmi < 30){
+            showResult("Overweight (BMI " + b + ")", "warn", "BMI is 25 to 29.9. Regular exercise and diet control are advised.");
+        } else {
+            showResult("Obese (BMI " + b + ")", "danger", "BMI is 30 or above. Please consult a doctor.");
+        }
+    }
+
+    else if(currentParam === "sugar"){
+        const g = val("glu");
+        if(isNaN(g) || g <= 0){ alert("Please enter your sugar value."); return; }
+
+        if(g < 70){
+            showResult("Low sugar", "danger", "Blood sugar is below 70 mg/dL. Take something sweet and seek medical advice.");
+        } else if(g <= 99){
+            showResult("Normal", "normal", "Fasting sugar is in the normal range (70 to 99 mg/dL).");
+        } else if(g <= 125){
+            showResult("Pre-diabetes range", "warn", "Fasting sugar is 100 to 125 mg/dL. Watch your diet and consult a doctor.");
+        } else {
+            showResult("Diabetes range", "danger", "Fasting sugar is 126 mg/dL or above. Please consult a doctor.");
+        }
+    }
+
+    else if(currentParam === "temp"){
+        let t = val("tmp");
+        if(isNaN(t) || t <= 0){ alert("Please enter temperature."); return; }
+
+        // convert to Celsius if user chose Fahrenheit
+        if(document.getElementById("unit").value === "°F"){
+            t = (t - 32) * 5 / 9;
+        }
+
+        if(t >= 39.4){
+            showResult("High fever", "danger", "Temperature is very high. Seek medical care.");
+        } else if(t >= 37.8){
+            showResult("Fever", "danger", "You have a fever. Rest, drink fluids, and consult a doctor if it continues.");
+        } else if(t > 37.2){
+            showResult("Slightly high", "warn", "Temperature is a little above normal. Recheck after some time.");
+        } else if(t < 35.5){
+            showResult("Low (Hypothermia risk)", "danger", "Body temperature is too low. Keep warm and seek medical help.");
+        } else if(t < 36.1){
+            showResult("Slightly low", "warn", "Temperature is a little below normal. Recheck after some time.");
+        } else {
+            showResult("Normal", "normal", "Normal body temperature (about 36.1 to 37.2 °C / 97 to 99 °F).");
+        }
+    }
+
+    else if(currentParam === "steps"){
+        const st = val("stp");
+        if(isNaN(st) || st < 0){ alert("Please enter your steps count."); return; }
+
+        if(st < 3000){
+            showResult("Very low activity", "danger", "Less than 3,000 steps. Try to walk more every day.");
+        } else if(st < 7000){
+            showResult("Low activity", "warn", "Try to reach at least 7,000 to 10,000 steps a day.");
+        } else {
+            showResult("Good", "normal", "Great! You are meeting the daily activity goal.");
+        }
+    }
+}
+
+/* Next button: save last result and go to result.html */
+function goNext(){
+    if(!lastResult){
+        alert("Please select a parameter, enter the value and click Check first.");
+        return;
+    }
+    localStorage.setItem("lastHealthResult", JSON.stringify(lastResult));
+    window.location.href = "result.html";
 }
 </script>
 
