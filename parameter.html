@@ -5,318 +5,248 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Select Parameter</title>
 <style>
-body{
-    font-family:Segoe UI;
-    margin:0;
-    background:linear-gradient(to right,#1d4350,#a43931);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-}
-.container{
-    background:white;
-    padding:40px;
-    width:450px;
-    max-width:92%;
-    border-radius:15px;
-    text-align:center;
-}
-button{
-    width:45%;
-    padding:15px;
-    margin:10px;
-    border:none;
-    border-radius:10px;
-    background:#0984e3;
-    color:white;
-    cursor:pointer;
-}
-button:hover{
-    background:#0652DD;
-}
-button.active{
-    background:#0652DD;
-    outline:3px solid #74b9ff;
-}
-.next{
-    margin-top:20px;
-    background:#00b894;
-}
-
-/* ---------- NEW: input panel + result ---------- */
-#inputBox{
-    display:none;
-    margin-top:15px;
-    text-align:left;
-}
-#inputBox label{
-    display:block;
-    font-size:14px;
-    color:#444;
-    margin:10px 0 4px;
-}
-#inputBox input, #inputBox select{
-    width:100%;
-    padding:11px;
-    border:1px solid #ccc;
-    border-radius:8px;
-    font-size:15px;
-}
-#checkBtn{
-    width:100%;
-    margin:15px 0 0;
-    background:#e17055;
-}
-#checkBtn:hover{
-    background:#d63031;
-}
-#result{
-    display:none;
-    margin-top:15px;
-    padding:14px;
-    border-radius:10px;
-    font-size:15px;
-    text-align:left;
-    line-height:1.5;
-}
-#result.normal{ background:#e6f9f3; color:#00785c; border:1px solid #00b894; }
-#result.warn  { background:#fff4e0; color:#a35a00; border:1px solid #fdcb6e; }
-#result.danger{ background:#ffeaea; color:#b71c1c; border:1px solid #d63031; }
-.note{
-    font-size:12px;
-    color:#777;
-    margin-top:12px;
-}
+body{font-family:Segoe UI;margin:0;background:linear-gradient(to right,#1d4350,#a43931);display:flex;justify-content:center;align-items:center;min-height:100vh}
+.container{background:white;padding:30px;width:450px;max-width:94%;border-radius:15px;text-align:center;margin:15px 0}
+button{width:45%;padding:15px;margin:8px;border:none;border-radius:10px;background:#0984e3;color:white;cursor:pointer;font-size:15px}
+button:hover{background:#0652DD}
+button.active{background:#0652DD;outline:3px solid #74b9ff}
+button.full{width:100%;margin:10px 0;background:#e17055}
+button.full:hover{background:#d63031}
+.next{margin-top:20px;background:#00b894}
+#inputBox{display:none;margin-top:15px;text-align:left}
+#inputBox label{display:block;font-size:14px;color:#444;margin:10px 0 4px}
+#inputBox input{width:100%;padding:11px;border:1px solid #ccc;border-radius:8px;font-size:15px}
+.info{font-size:14px;color:#555;margin:8px 0;line-height:1.5}
+#result{display:none;margin-top:15px;padding:14px;border-radius:10px;font-size:15px;text-align:left;line-height:1.5}
+#result.normal{background:#e6f9f3;color:#00785c;border:1px solid #00b894}
+#result.warn{background:#fff4e0;color:#a35a00;border:1px solid #fdcb6e}
+#result.danger{background:#ffeaea;color:#b71c1c;border:1px solid #d63031}
+#result a{color:#b71c1c;font-weight:bold}
+.note{font-size:12px;color:#777;margin-top:12px}
 </style>
 </head>
 <body>
-
 <div class="container">
 <h2>Select Parameter</h2>
-
-<!-- CHANGED: each button now passes its parameter name -->
-<button onclick="selectParam('bp', this)">Blood Pressure</button>
-<button onclick="selectParam('hr', this)">Heart Rate</button>
-<button onclick="selectParam('bmi', this)">BMI</button>
-<button onclick="selectParam('sugar', this)">Diabetes</button>
-<button onclick="selectParam('temp', this)">Temperature</button>
-<button onclick="selectParam('steps', this)">Steps Count</button>
-
-<!-- NEW: input fields appear here after a parameter is selected -->
-<div id="inputBox">
-    <div id="fields"></div>
-    <button id="checkBtn" onclick="checkValue()">Check</button>
+<div class="menu">
+<button onclick="selectParam('hr',this)">❤️ Heart Rate</button>
+<button onclick="selectParam('steps',this)">👟 Steps (Walk Test)</button>
+<button onclick="selectParam('sleep',this)">😴 Sleep</button>
+<button onclick="selectParam('react',this)">🧠 Reaction Time</button>
+<button onclick="selectParam('chair',this)">🪑 Chair Stand</button>
 </div>
 
-<!-- NEW: normal / abnormal result appears here -->
+<div id="inputBox"><div id="fields"></div></div>
 <div id="result"></div>
 
 <br>
-<!-- CHANGED: Next now goes to result.html only after a check is done -->
 <button class="next" onclick="goNext()">Next</button>
-
 <p class="note">For awareness only. This is not a medical diagnosis.</p>
 </div>
 
 <script>
-let currentParam = null;
-let lastResult = null;
+const $=id=>document.getElementById(id);
+const titles={hr:"Heart Rate",steps:"Walking Test (Steps)",sleep:"Sleep Duration",react:"Reaction Time",chair:"Chair Stand Test"};
+let currentParam=null,lastResult=null,stopFn=null;
+let rState='idle',rT=0,rTimer=null,rTimes=[];
 
-/* Input fields for each parameter */
-const fieldsConfig = {
-    bp: [
-        {id:"sys", label:"Systolic (upper) mmHg", ph:"e.g. 120"},
-        {id:"dia", label:"Diastolic (lower) mmHg", ph:"e.g. 80"}
-    ],
-    hr: [
-        {id:"bpm", label:"Resting heart rate (beats per minute)", ph:"e.g. 72"}
-    ],
-    bmi: [
-        {id:"wt", label:"Weight (kg)", ph:"e.g. 65"},
-        {id:"ht", label:"Height (cm)", ph:"e.g. 165"}
-    ],
-    sugar: [
-        {id:"glu", label:"Fasting blood sugar (mg/dL)", ph:"e.g. 95"}
-    ],
-    temp: [
-        {id:"tmp", label:"Body temperature", ph:"e.g. 98.6"},
-        {id:"unit", label:"Unit", type:"select", options:["°F","°C"]}
-    ],
-    steps: [
-        {id:"stp", label:"Steps walked today", ph:"e.g. 6000"}
-    ]
+const panels={
+hr:`<p class="info">Cover the back camera and flash fully with your fingertip. Press lightly and keep still for 30 seconds. (Needs a phone and https.)</p>
+<button class="full" onclick="startHR()">📷 Start Measuring</button><p class="info" id="hrMsg"></p>
+<video id="vid" playsinline muted style="display:none"></video><canvas id="cv" width="40" height="40" style="display:none"></canvas>
+<label>Or type heart rate manually (bpm)</label><input type="number" id="bpm" placeholder="e.g. 72">
+<button class="full" onclick="manualHR()">Check</button>`,
+steps:`<p class="info">Hold the phone in your hand or pocket and walk normally for 60 seconds. The phone counts your steps.</p>
+<button class="full" onclick="startWalk()">🚶 Start Walking Test</button><p class="info" id="walkMsg"></p>`,
+sleep:`<p class="info" id="sleepInfo"></p>
+<button onclick="sleepStart()">😴 Going to Sleep</button><button onclick="sleepWake()">☀️ I Woke Up</button>
+<label>Or type hours slept last night</label><input type="number" step="any" id="slp" placeholder="e.g. 7">
+<button class="full" onclick="manualSleep()">Check</button>`,
+react:`<p class="info">Tap the box to start. Wait for it to turn GREEN, then tap as fast as you can. 3 rounds.</p>
+<div id="rbox" onclick="rTap()" style="height:150px;border-radius:12px;background:#636e72;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;user-select:none;text-align:center">Tap to Start</div>
+<p class="info" id="rmsg"></p>`,
+chair:`<p class="info">Sit on a chair with arms crossed. Stand up fully and sit down again as many times as you can in 30 seconds. A helper taps the big button each time you stand up.</p>
+<button class="full" onclick="startChair()">▶ Start 30 sec Test</button>
+<button id="cbtn" class="full" style="font-size:26px;padding:28px;display:none;background:#0984e3" onclick="cTap()"></button>
+<p class="info" id="cmsg"></p>`
 };
 
-const titles = {
-    bp:"Blood Pressure", hr:"Heart Rate", bmi:"BMI",
-    sugar:"Diabetes (Fasting Sugar)", temp:"Temperature", steps:"Steps Count"
-};
-
-/* Called when a parameter button is clicked */
-function selectParam(param, btn){
-    currentParam = param;
-    lastResult = null;
-
-    document.querySelectorAll("button").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-
-    let html = "";
-    fieldsConfig[param].forEach(f => {
-        html += `<label for="${f.id}">${f.label}</label>`;
-        if(f.type === "select"){
-            html += `<select id="${f.id}">` +
-                    f.options.map(o => `<option>${o}</option>`).join("") +
-                    `</select>`;
-        } else {
-            html += `<input type="number" step="any" id="${f.id}" placeholder="${f.ph}">`;
-        }
-    });
-
-    document.getElementById("fields").innerHTML = html;
-    document.getElementById("inputBox").style.display = "block";
-    document.getElementById("result").style.display = "none";
-}
-
-function val(id){
-    return parseFloat(document.getElementById(id).value);
+function selectParam(p,btn){
+  if(stopFn){stopFn();stopFn=null;}
+  clearTimeout(rTimer);rState='idle';rTimes=[];
+  currentParam=p;lastResult=null;
+  document.querySelectorAll(".menu button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  $("fields").innerHTML=panels[p];
+  $("inputBox").style.display="block";
+  $("result").style.display="none";
+  if(p==="sleep")sleepInfo();
 }
 
 /* Show result box + alert if not normal */
-function showResult(status, level, message){
-    // level: "normal" | "warn" | "danger"
-    const box = document.getElementById("result");
-    box.className = level;
-    box.style.display = "block";
-    box.innerHTML = `<b>${status}</b><br>${message}`;
-
-    lastResult = {parameter: titles[currentParam], status: status, message: message, level: level};
-
-    if(level !== "normal"){
-        alert((level === "danger" ? "🚨 " : "⚠️ ") + titles[currentParam] + ": " + status + "\n\n" + message);
-    }
+function showResult(status,level,message){
+  const box=$("result");
+  box.className=level;box.style.display="block";
+  box.innerHTML="<b>"+status+"</b><br>"+message+(level==="danger"?'<br><a href="emergency.html">🚨 Go to Emergency Help</a>':"");
+  lastResult={parameter:titles[currentParam],status:status,message:message,level:level};
+  localStorage.setItem("lastHealthResult",JSON.stringify(lastResult));
+  if(level!=="normal"){
+    alert((level==="danger"?"🚨 ":"⚠️ ")+titles[currentParam]+": "+status+"\n\n"+message);
+  }
 }
 
-/* Main checking logic */
-function checkValue(){
-    if(!currentParam){
-        alert("Please select a parameter first.");
-        return;
-    }
-
-    if(currentParam === "bp"){
-        const s = val("sys"), d = val("dia");
-        if(isNaN(s) || isNaN(d) || s <= 0 || d <= 0){ alert("Please enter both BP values."); return; }
-
-        if(s > 180 || d > 120){
-            showResult("Hypertensive crisis", "danger", "Very high BP. Get medical help immediately.");
-        } else if(s >= 140 || d >= 90){
-            showResult("High (Stage 2)", "danger", "BP is high. Please consult a doctor.");
-        } else if(s >= 130 || d >= 80){
-            showResult("High (Stage 1)", "warn", "BP is above normal. Monitor regularly and consult a doctor.");
-        } else if(s >= 120){
-            showResult("Elevated", "warn", "Slightly above normal. Reduce salt, exercise, and recheck.");
-        } else if(s < 90 || d < 60){
-            showResult("Low", "warn", "BP is low. Drink fluids, rest, and consult a doctor if you feel dizzy.");
-        } else {
-            showResult("Normal", "normal", "Your blood pressure is in the normal range (about 120/80).");
-        }
-    }
-
-    else if(currentParam === "hr"){
-        const h = val("bpm");
-        if(isNaN(h) || h <= 0){ alert("Please enter heart rate."); return; }
-
-        if(h > 100){
-            showResult("High (Tachycardia)", "danger", "Resting heart rate is above 100 bpm. Consult a doctor.");
-        } else if(h < 60){
-            showResult("Low (Bradycardia)", "warn", "Resting heart rate is below 60 bpm. Consult a doctor if you feel weak or dizzy.");
-        } else {
-            showResult("Normal", "normal", "Normal resting heart rate is 60 to 100 bpm.");
-        }
-    }
-
-    else if(currentParam === "bmi"){
-        const w = val("wt"), hcm = val("ht");
-        if(isNaN(w) || isNaN(hcm) || w <= 0 || hcm <= 0){ alert("Please enter weight and height."); return; }
-
-        const bmi = w / Math.pow(hcm / 100, 2);
-        const b = bmi.toFixed(1);
-
-        if(bmi < 18.5){
-            showResult("Underweight (BMI " + b + ")", "warn", "BMI is below 18.5. Consider a balanced, nutritious diet.");
-        } else if(bmi < 25){
-            showResult("Normal (BMI " + b + ")", "normal", "Healthy weight range (18.5 to 24.9).");
-        } else if(bmi < 30){
-            showResult("Overweight (BMI " + b + ")", "warn", "BMI is 25 to 29.9. Regular exercise and diet control are advised.");
-        } else {
-            showResult("Obese (BMI " + b + ")", "danger", "BMI is 30 or above. Please consult a doctor.");
-        }
-    }
-
-    else if(currentParam === "sugar"){
-        const g = val("glu");
-        if(isNaN(g) || g <= 0){ alert("Please enter your sugar value."); return; }
-
-        if(g < 70){
-            showResult("Low sugar", "danger", "Blood sugar is below 70 mg/dL. Take something sweet and seek medical advice.");
-        } else if(g <= 99){
-            showResult("Normal", "normal", "Fasting sugar is in the normal range (70 to 99 mg/dL).");
-        } else if(g <= 125){
-            showResult("Pre-diabetes range", "warn", "Fasting sugar is 100 to 125 mg/dL. Watch your diet and consult a doctor.");
-        } else {
-            showResult("Diabetes range", "danger", "Fasting sugar is 126 mg/dL or above. Please consult a doctor.");
-        }
-    }
-
-    else if(currentParam === "temp"){
-        let t = val("tmp");
-        if(isNaN(t) || t <= 0){ alert("Please enter temperature."); return; }
-
-        // convert to Celsius if user chose Fahrenheit
-        if(document.getElementById("unit").value === "°F"){
-            t = (t - 32) * 5 / 9;
-        }
-
-        if(t >= 39.4){
-            showResult("High fever", "danger", "Temperature is very high. Seek medical care.");
-        } else if(t >= 37.8){
-            showResult("Fever", "danger", "You have a fever. Rest, drink fluids, and consult a doctor if it continues.");
-        } else if(t > 37.2){
-            showResult("Slightly high", "warn", "Temperature is a little above normal. Recheck after some time.");
-        } else if(t < 35.5){
-            showResult("Low (Hypothermia risk)", "danger", "Body temperature is too low. Keep warm and seek medical help.");
-        } else if(t < 36.1){
-            showResult("Slightly low", "warn", "Temperature is a little below normal. Recheck after some time.");
-        } else {
-            showResult("Normal", "normal", "Normal body temperature (about 36.1 to 37.2 °C / 97 to 99 °F).");
-        }
-    }
-
-    else if(currentParam === "steps"){
-        const st = val("stp");
-        if(isNaN(st) || st < 0){ alert("Please enter your steps count."); return; }
-
-        if(st < 3000){
-            showResult("Very low activity", "danger", "Less than 3,000 steps. Try to walk more every day.");
-        } else if(st < 7000){
-            showResult("Low activity", "warn", "Try to reach at least 7,000 to 10,000 steps a day.");
-        } else {
-            showResult("Good", "normal", "Great! You are meeting the daily activity goal.");
-        }
-    }
+/* ---------- 1. HEART RATE (camera) ---------- */
+async function startHR(){
+  let stream;
+  try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:320},height:{ideal:240}}});}
+  catch(e){alert("Camera not available. Allow camera permission (page must be https) or type the value manually.");return;}
+  const track=stream.getVideoTracks()[0];
+  try{await track.applyConstraints({advanced:[{torch:true}]});}catch(e){}
+  const v=$("vid");v.srcObject=stream;await v.play();
+  const c=$("cv").getContext("2d",{willReadFrequently:true});
+  const data=[],t0=performance.now(),DUR=30000,msg=$("hrMsg");
+  const timer=setInterval(()=>{
+    const t=performance.now()-t0;
+    c.drawImage(v,0,0,40,40);
+    const px=c.getImageData(0,0,40,40).data;let r=0,g=0;
+    for(let i=0;i<px.length;i+=4){r+=px[i];g+=px[i+1];}
+    r/=1600;g/=1600;
+    if(r>80&&r>g*2){data.push([t,r]);msg.textContent="Measuring... "+Math.ceil((DUR-t)/1000)+"s. Keep finger still.";}
+    else msg.textContent="Finger not detected. Cover the camera and flash fully.";
+    if(t>=DUR)finish();
+  },50);
+  function stop(){clearInterval(timer);stream.getTracks().forEach(x=>x.stop());}
+  stopFn=stop;
+  function finish(){
+    stop();stopFn=null;
+    const bpm=calcBPM(data);
+    if(!bpm){msg.textContent="";alert("Could not read the pulse. Try again with your finger covering the camera and flash.");return;}
+    $("bpm").value=bpm;msg.textContent="Measured: "+bpm+" bpm";
+    evalHR(bpm);
+  }
+}
+function calcBPM(d){
+  if(d.length<150)return 0;
+  const t=d.map(x=>x[0]),v=d.map(x=>x[1]),n=v.length,w=10;
+  const s=v.map((_,i)=>{let a=0,k=0;for(let j=Math.max(0,i-w);j<=Math.min(n-1,i+w);j++){a+=v[j];k++;}return v[i]-a/k;});
+  const m=s.map((_,i)=>(s[Math.max(0,i-1)]+s[i]+s[Math.min(n-1,i+1)])/3);
+  const sd=Math.sqrt(s.reduce((a,x)=>a+x*x,0)/n);
+  const iv=[];let last=-1e9;
+  for(let i=1;i<n-1;i++){
+    if(m[i]>m[i-1]&&m[i]>=m[i+1]&&m[i]>0.3*sd&&t[i]-last>=400){if(last>0)iv.push(t[i]-last);last=t[i];}
+  }
+  if(iv.length<8)return 0;
+  iv.sort((a,b)=>a-b);
+  const bpm=Math.round(60000/iv[Math.floor(iv.length/2)]);
+  return(bpm>=40&&bpm<=190)?bpm:0;
+}
+function manualHR(){const h=parseFloat($("bpm").value);if(isNaN(h)||h<=0){alert("Please enter heart rate.");return;}evalHR(h);}
+function evalHR(h){
+  if(h>100)showResult("High ("+h+" bpm)","danger","Resting heart rate is above 100 bpm. Please rest and consult a doctor.");
+  else if(h<60)showResult("Low ("+h+" bpm)","warn","Heart rate is below 60 bpm. Consult a doctor if you feel weak or dizzy.");
+  else showResult("Normal ("+h+" bpm)","normal","Normal resting heart rate is 60 to 100 bpm.");
 }
 
-/* Next button: save last result and go to result.html */
+/* ---------- 2. STEPS (1-minute walk test with phone sensor) ---------- */
+async function startWalk(){
+  if(!window.DeviceMotionEvent){alert("Motion sensor not found. Please open this page on a phone.");return;}
+  if(typeof DeviceMotionEvent.requestPermission==="function"){
+    try{if(await DeviceMotionEvent.requestPermission()!=="granted")return;}catch(e){return;}
+  }
+  let steps=0,base=9.8,last=0,got=false;
+  const t0=Date.now(),DUR=60000,msg=$("walkMsg");
+  function h(e){
+    const a=e.accelerationIncludingGravity;if(!a||a.x==null)return;
+    got=true;const m=Math.sqrt(a.x*a.x+a.y*a.y+a.z*a.z);
+    base=base*0.9+m*0.1;const now=Date.now();
+    if(m-base>1.2&&now-last>300){steps++;last=now;}
+  }
+  window.addEventListener("devicemotion",h);
+  const tm=setInterval(()=>{
+    const left=Math.ceil((DUR-(Date.now()-t0))/1000);
+    msg.textContent="Walking... "+Math.max(left,0)+"s left | Steps: "+steps;
+    if(left<=0){stop();stopFn=null;if(!got){alert("No motion data received. Use a phone with a motion sensor.");return;}evalSteps(steps);}
+  },500);
+  function stop(){clearInterval(tm);window.removeEventListener("devicemotion",h);}
+  stopFn=stop;
+}
+function evalSteps(s){
+  if(s<40)showResult("Very slow walking ("+s+" steps/min)","danger","Walking pace is very low. Please consult a doctor and take care while walking.");
+  else if(s<80)showResult("Slow walking ("+s+" steps/min)","warn","Pace is below the healthy range. Try to walk a little every day.");
+  else showResult("Good ("+s+" steps/min)","normal","Your walking pace is healthy. Keep it up!");
+}
+
+/* ---------- 3. SLEEP ---------- */
+function sleepInfo(){
+  const s=localStorage.getItem("sleepStart");
+  $("sleepInfo").textContent=s?"Sleep started at "+new Date(+s).toLocaleTimeString()+". Press 'I Woke Up' in the morning.":"Press 'Going to Sleep' when you go to bed.";
+}
+function sleepStart(){localStorage.setItem("sleepStart",Date.now());sleepInfo();alert("Good night! 😴 Come back and press 'I Woke Up' in the morning.");}
+function sleepWake(){
+  const s=localStorage.getItem("sleepStart");
+  if(!s){alert("Please press 'Going to Sleep' first.");return;}
+  const hrs=(Date.now()-s)/3600000;localStorage.removeItem("sleepStart");sleepInfo();
+  if(hrs>24){alert("Sleep time looks wrong. Please type the hours manually.");return;}
+  evalSleep(Math.round(hrs*10)/10);
+}
+function manualSleep(){const h=parseFloat($("slp").value);if(isNaN(h)||h<=0||h>24){alert("Please enter hours between 1 and 24.");return;}evalSleep(h);}
+function evalSleep(h){
+  if(h<5)showResult("Very little sleep ("+h+" hrs)","danger","Less than 5 hours of sleep is not healthy. Please consult a doctor if this continues.");
+  else if(h<7)showResult("Less sleep ("+h+" hrs)","warn","Elderly people need 7 to 9 hours of sleep. Try to sleep a little more.");
+  else if(h<=9)showResult("Normal ("+h+" hrs)","normal","Good sleep! 7 to 9 hours is the healthy range.");
+  else showResult("Too much sleep ("+h+" hrs)","warn","More than 9 hours of sleep. Consult a doctor if you feel tired all day.");
+}
+
+/* ---------- 4. REACTION TIME ---------- */
+function rTap(){
+  const b=$("rbox");
+  if(rState==="idle"){
+    rState="wait";b.style.background="#d63031";b.textContent="Wait for green...";
+    rTimer=setTimeout(()=>{rState="go";rT=performance.now();b.style.background="#00b894";b.textContent="TAP NOW!";},2000+Math.random()*3000);
+  }else if(rState==="wait"){
+    clearTimeout(rTimer);rState="idle";b.style.background="#636e72";b.textContent="Too early! Tap to retry";
+  }else{
+    const ms=Math.round(performance.now()-rT);rTimes.push(ms);rState="idle";b.style.background="#636e72";
+    $("rmsg").textContent="Round "+rTimes.length+"/3: "+ms+" ms";
+    if(rTimes.length<3)b.textContent="Tap for next round";
+    else{const avg=Math.round(rTimes.reduce((a,x)=>a+x,0)/3);rTimes=[];b.textContent="Tap to test again";evalReact(avg);}
+  }
+}
+function evalReact(ms){
+  if(ms>900)showResult("Very slow ("+ms+" ms)","danger","Reaction time is much slower than normal. Please consult a doctor.");
+  else if(ms>600)showResult("Slow ("+ms+" ms)","warn","Reaction time is slower than normal. Take care while walking and recheck later.");
+  else showResult("Normal ("+ms+" ms)","normal","Your reaction time is good.");
+}
+
+/* ---------- 5. CHAIR STAND TEST (30 sec) ---------- */
+function startChair(){
+  let count=0,left=30;const b=$("cbtn"),msg=$("cmsg");
+  window.cTap=()=>{count++;b.textContent="Stood up! ("+count+")";};
+  b.style.display="block";b.textContent="Stood up! (0)";msg.textContent="Time left: 30s";
+  const tm=setInterval(()=>{
+    left--;msg.textContent="Time left: "+left+"s";
+    if(left<=0){stop();stopFn=null;b.style.display="none";msg.textContent="Total stands in 30 sec: "+count;evalChair(count);}
+  },1000);
+  function stop(){clearInterval(tm);}
+  stopFn=stop;
+}
+function evalChair(c){
+  if(c<8)showResult("Weak legs ("+c+" stands)","danger","Fewer than 8 stands in 30 seconds shows high fall risk. Please consult a doctor.");
+  else if(c<12)showResult("Below average ("+c+" stands)","warn","Leg strength is a little low. Light daily exercise can help. Be careful of falls.");
+  else showResult("Good ("+c+" stands)","normal","Your leg strength is good.");
+}
+
+/* Next button */
 function goNext(){
-    if(!lastResult){
-        alert("Please select a parameter, enter the value and click Check first.");
-        return;
-    }
-    localStorage.setItem("lastHealthResult", JSON.stringify(lastResult));
-    window.location.href = "result.html";
+  if(!lastResult){alert("Please select a parameter and complete the check first.");return;}
+  localStorage.setItem("lastHealthResult",JSON.stringify(lastResult));
+  window.location.href="result.html";
 }
 </script>
-
 </body>
 </html>
+   
+
+
+     
+   
