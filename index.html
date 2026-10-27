@@ -205,27 +205,140 @@ footer span{
 </footer>
 
 <script>
+/* ========== 1. TRANSLATIONS ========== */
+const translations = {
+  en: {
+    sysTitle: "Health Monitoring System", home: "Home", about: "About Us", contact: "Contact Us",
+    language: "Language", tagline: "Smart Health Monitoring for a Better Tomorrow",
+    emailHint: "Enter Email", passwordHint: "Enter Password", showPw: "Show password",
+    login: "Login", signup: "Sign Up", forgot: "Forgot Password?",
+    newUser: "You are a new user. Please register first.",
+    invalid: "Invalid email or password.", success: "Login successful!",
+    fontPlus: "Increase text size", fontMinus: "Decrease text size",
+    contrast: "High contrast", readAloud: "Read page aloud"
+  },
+  ta: {
+    sysTitle: "சுகாதார கண்காணிப்பு அமைப்பு", home: "முகப்பு", about: "எங்களைப் பற்றி", contact: "தொடர்புக்கு",
+    language: "மொழி", tagline: "சிறந்த நாளைக்கான ஸ்மார்ட் சுகாதார கண்காணிப்பு",
+    emailHint: "மின்னஞ்சலை உள்ளிடவும்", passwordHint: "கடவுச்சொல்லை உள்ளிடவும்", showPw: "கடவுச்சொல்லைக் காட்டு",
+    login: "உள்நுழை", signup: "பதிவு செய்", forgot: "கடவுச்சொல் மறந்துவிட்டதா?",
+    newUser: "நீங்கள் புதிய பயனர். முதலில் பதிவு செய்யவும்.",
+    invalid: "மின்னஞ்சல் அல்லது கடவுச்சொல் தவறானது.", success: "உள்நுழைவு வெற்றி!",
+    fontPlus: "எழுத்தைப் பெரிதாக்கு", fontMinus: "எழுத்தைச் சிறிதாக்கு",
+    contrast: "அதிக வேறுபாடு", readAloud: "பக்கத்தை வாசி"
+  },
+  hi: {
+    sysTitle: "स्वास्थ्य निगरानी प्रणाली", home: "होम", about: "हमारे बारे में", contact: "संपर्क करें",
+    language: "भाषा", tagline: "बेहतर कल के लिए स्मार्ट स्वास्थ्य निगरानी",
+    emailHint: "ईमेल दर्ज करें", passwordHint: "पासवर्ड दर्ज करें", showPw: "पासवर्ड दिखाएं",
+    login: "लॉग इन", signup: "साइन अप", forgot: "पासवर्ड भूल गए?",
+    newUser: "आप नए उपयोगकर्ता हैं। कृपया पहले रजिस्टर करें।",
+    invalid: "ईमेल या पासवर्ड गलत है।", success: "लॉगिन सफल!",
+    fontPlus: "अक्षर बड़े करें", fontMinus: "अक्षर छोटे करें",
+    contrast: "उच्च कंट्रास्ट", readAloud: "पेज पढ़कर सुनाएं"
+  }
+  // te, kn, ml, bn, mr, gu, pa, or, ur → inge same keys-oda add pannalaam
+};
+
+const speechLang = {
+  en: "en-IN", ta: "ta-IN", hi: "hi-IN", te: "te-IN", kn: "kn-IN", ml: "ml-IN",
+  bn: "bn-IN", mr: "mr-IN", gu: "gu-IN", pa: "pa-IN", or: "or-IN", ur: "ur-IN"
+};
+
+/* ========== 2. HELPERS + LANGUAGE ========== */
+const langSelect = document.getElementById("langSelect");
+const msgBox = document.getElementById("formMsg");
+
+function t(key) {
+  const code = document.documentElement.lang;
+  return (translations[code] && translations[code][key]) || translations.en[key] || key;
+}
+
+function speak(text) {
+  if (!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = speechLang[document.documentElement.lang] || "en-IN";
+  speechSynthesis.speak(u);
+}
+
+function showMessage(text, type) {
+  msgBox.textContent = (type === "error" ? "⚠️ " : "✅ ") + text;
+  msgBox.className = "msg " + type;
+  if (type === "error" && navigator.vibrate) navigator.vibrate([200, 100, 200]);
+  speak(text);
+}
+
+function applyLanguage(code) {
+  if (!translations[code]) code = "en";
+  document.documentElement.lang = code;
+  document.documentElement.dir = (code === "ur") ? "rtl" : "ltr";
+
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
+
+  langSelect.value = code;
+  msgBox.textContent = "";
+  msgBox.className = "msg";
+  try { localStorage.setItem("vc_lang", code); } catch (e) {}
+}
+
+langSelect.addEventListener("change", () => applyLanguage(langSelect.value));
+
+let savedLang = null;
+try { savedLang = localStorage.getItem("vc_lang"); } catch (e) {}
+const browserLang = (navigator.language || "en").slice(0, 2);
+applyLanguage(savedLang || (translations[browserLang] ? browserLang : "en"));
+
+/* ========== 3. ACCESSIBILITY ========== */
+document.getElementById("showPw").addEventListener("change", e => {
+  document.getElementById("password").type = e.target.checked ? "text" : "password";
+});
+
+let fontScale = 100;
+try { fontScale = parseInt(localStorage.getItem("vc_font")) || 100; } catch (e) {}
+function setFont(v) {
+  fontScale = Math.max(80, Math.min(160, v));
+  document.documentElement.style.fontSize = fontScale + "%";
+  try { localStorage.setItem("vc_font", fontScale); } catch (e) {}
+}
+setFont(fontScale);
+document.getElementById("fontPlus").onclick  = () => setFont(fontScale + 10);
+document.getElementById("fontMinus").onclick = () => setFont(fontScale - 10);
+
+try { if (localStorage.getItem("vc_contrast") === "1") document.body.classList.add("high-contrast"); } catch (e) {}
+document.getElementById("contrastBtn").onclick = () => {
+  const on = document.body.classList.toggle("high-contrast");
+  try { localStorage.setItem("vc_contrast", on ? "1" : "0"); } catch (e) {}
+};
+
+document.getElementById("readBtn").onclick = () => {
+  speak([t("sysTitle"), "VitalCare", t("tagline"), t("emailHint"), t("passwordHint"), t("login")].join(". "));
+};
+
+/* ========== 4. LOGIN (ungal pazhaya logic, alert mattum maathirukku) ========== */
 function loginUser() {
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
+  let email = document.getElementById("email").value.trim();
+  let password = document.getElementById("password").value;
 
-    let storedEmail = localStorage.getItem("userEmail");
-    let storedPassword = localStorage.getItem("userPassword");
+  let storedEmail = localStorage.getItem("userEmail");
+  let storedPassword = localStorage.getItem("userPassword");
 
-    if (!storedEmail) {
-        alert("You are a new user. Please register first.");
-        window.location.href = "signup.html";
-        return false;
-    }
+  if (!storedEmail) {
+    showMessage(t("newUser"), "error");
+    setTimeout(() => { window.location.href = "signup.html"; }, 3500);
+    return false;
+  }
 
-    if (email === storedEmail && password === storedPassword) {
-        alert("Login Successful!");
-        window.location.href = "patient.html";
-        return false;
-    } else {
-        alert("Invalid Credentials!");
-        return false;
-    }
+  if (email === storedEmail && password === storedPassword) {
+    showMessage(t("success"), "success");
+    setTimeout(() => { window.location.href = "patient.html"; }, 1500);
+    return false;
+  } else {
+    showMessage(t("invalid"), "error");
+    return false;
+  }
 }
 </script>
 
