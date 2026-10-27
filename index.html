@@ -1,171 +1,266 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>VitalCare</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitalCare</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family: 'Segoe UI', sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
 }
 
-body{
-    height:100vh;
-    background: url('ui.jpeg') no-repeat center center/cover;
-    position:relative;
-    display:flex;
-    flex-direction:column;
+body {
+    min-height: 100vh;
+    background: url("ui.jpeg") center/cover fixed no-repeat;
+    display: flex;
+    flex-direction: column;
+    color: white;
 }
 
-
-body::before{
-    content:"";
-    position:absolute;
-    width:100%;
-    height:100%;
-    background:linear-gradient(to right, rgba(0,0,0,0.75), rgba(0,0,0,0.45));
-    z-index:0;
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(
+        to right, rgba(0,0,0,.82), rgba(0,0,0,.55)
+    );
+    z-index: 0;
+    pointer-events: none;
 }
 
-
-header{
-    width:100%;
-    padding:20px 60px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    position:relative;
-    z-index:1;
-    backdrop-filter: blur(6px);
+header, main, footer {
+    position: relative;
+    z-index: 1;
 }
 
-.logo{
-    color:#00e6ac;
-    font-size:28px;   
-    font-weight:bold;
-    letter-spacing:1px;
+header {
+    padding: 20px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    background: rgba(0,0,0,.2);
 }
 
-nav a{
-    color:white;
-    text-decoration:none;
-    margin-left:30px;
-    font-weight:500;
-    transition:0.3s;
-    font-size:16px;
+.logo {
+    color: #00e6ac;
+    font-size: 23px;
+    font-weight: bold;
 }
 
-nav a:hover{
-    color:#00e6ac;
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-
-.container{
-    flex:1;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    position:relative;
-    z-index:1;
-    text-align:center;
+nav a, .links a {
+    color: white;
+    text-decoration: none;
 }
 
-.app-name{
-    color:white;
-    font-size:48px;
-    font-weight:bold;
-    margin-bottom:10px;
-    letter-spacing:1px;
+nav a:hover, .links a:hover {
+    color: #00e6ac;
+    text-decoration: underline;
 }
 
-
-.tagline{
-    color:#dfe6e9;
-    font-size:18px;
-    margin-bottom:30px;
-    font-weight:300;
-    letter-spacing:1px;
+main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 30px 16px;
 }
 
-
-.login-box{
-    background:rgba(255,255,255,0.15);
-    padding:40px;
-    width:360px;
-    border-radius:15px;
-    backdrop-filter:blur(15px);
-    box-shadow:0 10px 30px rgba(0,0,0,0.4);
-    transition:0.4s;
+.app-name {
+    font-size: clamp(36px, 6vw, 48px);
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
-.login-box:hover{
-    transform:translateY(-8px);
+.tagline {
+    font-size: 18px;
+    margin-bottom: 25px;
+    color: #e5e7eb;
 }
 
-.login-box input{
-    width:100%;
-    padding:12px;
-    margin:12px 0;
-    border-radius:8px;
-    border:none;
-    outline:none;
+.login-box {
+    background: rgba(255,255,255,.15);
+    backdrop-filter: blur(15px);
+    padding: 30px;
+    width: min(360px, 95vw);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
 }
 
-.login-box button{
-    width:100%;
-    padding:12px;
-    background:#00b894;
-    border:none;
-    border-radius:8px;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-    transition:0.3s;
+.login-box input[type="email"],
+.login-box input[type="password"],
+.login-box input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #222;
+    background: white;
 }
 
-.login-box button:hover{
-    background:#019875;
-    transform:scale(1.05);
+.primary-btn, .language-card button {
+    width: 100%;
+    padding: 12px;
+    background: #00b894;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 12px;
 }
 
-.links{
-    margin-top:15px;
+button:hover {
+    filter: brightness(1.1);
 }
 
-.links a{
-    color:white;
-    text-decoration:none;
-    margin:0 8px;
-    font-size:14px;
+button:focus-visible, a:focus-visible, select:focus-visible,
+input:focus-visible {
+    outline: 3px solid #ffe66d;
+    outline-offset: 3px;
 }
 
-.links a:hover{
-    text-decoration:underline;
+.links {
+    margin-top: 18px;
+    line-height: 2;
 }
 
-
-footer{
-    text-align:center;
-    padding:15px;
-    color:white;
-    background:rgba(0,0,0,0.6);
-    position:relative;
-    z-index:1;
+.accessibility-tools {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
 }
 
-footer span{
-    color:#00e6ac;
-    font-weight:bold;
+.accessibility-tools button {
+    background: #202b32;
+    color: white;
+    border: 1px solid white;
+    border-radius: 7px;
+    padding: 9px 12px;
+    cursor: pointer;
 }
 
-@media(max-width:480px){
-    .login-box{
-        width:90%;
+.show-password {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    margin: 8px 0;
+    text-align: left;
+}
+
+.show-password input {
+    width: 18px;
+    height: 18px;
+}
+
+.msg {
+    margin-top: 12px;
+    overflow-wrap: anywhere;
+}
+
+.msg.error { color: #ffcccc; }
+.msg.success { color: #aaffdf; }
+
+footer {
+    text-align: center;
+    padding: 15px;
+    background: rgba(0,0,0,.7);
+}
+
+footer span { color: #00e6ac; }
+
+/* Language selection screen */
+.language-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(0,0,0,.94);
+    overflow-y: auto;
+}
+
+.language-screen[hidden] { display: none; }
+
+.language-card {
+    width: min(420px, 100%);
+    background: white;
+    color: #222;
+    padding: 28px;
+    border-radius: 16px;
+    text-align: center;
+}
+
+.language-card h2 { margin-bottom: 12px; }
+.language-card p { margin-bottom: 20px; line-height: 1.5; }
+
+.language-card label {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+}
+
+.language-card select {
+    width: 100%;
+    padding: 13px;
+    border-radius: 8px;
+    border: 1px solid #888;
+    font-size: 16px;
+    background: white;
+    color: #222;
+}
+
+.high-contrast {
+    background: black !important;
+}
+
+.high-contrast header,
+.high-contrast main,
+.high-contrast footer {
+    background-color: black;
+    color: white;
+}
+
+.high-contrast .login-box {
+    background: black;
+    border: 2px solid white;
+}
+
+@media (max-width: 600px) {
+    header {
+        justify-content: center;
+        text-align: center;
+    }
+
+    nav { justify-content: center; gap: 14px; }
+    .login-box { padding: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
     }
 }
 </style>
@@ -174,173 +269,528 @@ footer span{
 <body>
 
 <header>
-    <div class="logo">Health Monitoring System</div>
-    <nav>
-        <a href="home.html">Home</a>
-        <a href="about.html">About Us</a>
-        <a href="contact.html">Contact Us</a>
+    <div class="logo" data-i18n="sysTitle">
+        Health Monitoring System
+    </div>
+
+    <nav aria-label="Main navigation">
+        <a href="home.html" data-i18n="home">Home</a>
+        <a href="about.html" data-i18n="about">About Us</a>
+        <a href="contact.html" data-i18n="contact">Contact Us</a>
     </nav>
 </header>
 
-<div class="container">
+<!-- First-time language selection -->
+<section id="languageScreen" class="language-screen"
+         aria-labelledby="languageHeading">
+    <div class="language-card">
+        <h2 id="languageHeading">Choose Your Language</h2>
+        <p id="languageDescription">
+            Select your preferred language to continue.
+        </p>
+
+        <label for="langSelect" id="languageLabel">
+            Select Language
+        </label>
+
+        <select id="langSelect">
+            <option value="en">English</option>
+            <option value="ta">தமிழ் — Tamil</option>
+            <option value="hi">हिन्दी — Hindi</option>
+            <option value="te">తెలుగు — Telugu</option>
+            <option value="kn">ಕನ್ನಡ — Kannada</option>
+            <option value="ml">മലയാളം — Malayalam</option>
+            <option value="bn">বাংলা — Bengali</option>
+            <option value="mr">मराठी — Marathi</option>
+            <option value="gu">ગુજરાતી — Gujarati</option>
+            <option value="pa">ਪੰਜਾਬੀ — Punjabi</option>
+            <option value="or">ଓଡ଼ିଆ — Odia</option>
+            <option value="ur">اردو — Urdu</option>
+        </select>
+
+        <button type="button" id="continueBtn">Continue</button>
+    </div>
+</section>
+
+<main>
+    <div class="accessibility-tools">
+        <button type="button" id="readBtn" data-i18n="read">
+            🔊 Read Page
+        </button>
+        <button type="button" id="fontMinus" data-i18n="fontMinus">
+            A-
+        </button>
+        <button type="button" id="fontPlus" data-i18n="fontPlus">
+            A+
+        </button>
+        <button type="button" id="contrastBtn" data-i18n="contrast">
+            High Contrast
+        </button>
+    </div>
+
     <div class="app-name">VitalCare</div>
-    <div class="tagline">Smart Health Monitoring for a Better Tomorrow</div>
+
+    <div class="tagline" data-i18n="tagline">
+        Smart Health Monitoring for a Better Tomorrow
+    </div>
 
     <div class="login-box">
-        <form onsubmit="return loginUser()">
-            <input type="email" id="email" placeholder="Enter Email" required>
-            <input type="password" id="password" placeholder="Enter Password" required>
-            <button type="submit">Login</button>
+        <form id="loginForm">
+            <label for="email" data-i18n="emailLabel">Email</label>
+            <input type="email" id="email"
+                   data-i18n-placeholder="emailHint"
+                   placeholder="Enter Email" autocomplete="username"
+                   required>
+
+            <label for="password" data-i18n="passwordLabel">
+                Password
+            </label>
+            <input type="password" id="password"
+                   data-i18n-placeholder="passwordHint"
+                   placeholder="Enter Password"
+                   autocomplete="current-password" required>
+
+            <label class="show-password">
+                <input type="checkbox" id="showPw">
+                <span data-i18n="showPw">Show Password</span>
+            </label>
+
+            <button class="primary-btn" type="submit"
+                    data-i18n="login">Login</button>
+
+            <div id="formMsg" class="msg" role="status"
+                 aria-live="polite"></div>
 
             <div class="links">
-                <a href="signup.html">Sign Up</a> |
-                <a href="forgot.html">Forgot Password?</a>
+                <a href="signup.html" data-i18n="signup">Sign Up</a>
+                |
+                <a href="forgot.html" data-i18n="forgot">
+                    Forgot Password?
+                </a>
             </div>
         </form>
     </div>
-</div>
+</main>
 
 <footer>
-    © 2026 <span> VitalCare Health Monitoring System</span> | All Rights Reserved
+    © 2026 <span>VitalCare</span>
+    <span data-i18n="footer">Health Monitoring System | All Rights Reserved</span>
 </footer>
 
 <script>
-/* ========== 1. TRANSLATIONS ========== */
+/* All visible text on this page uses translation keys. */
 const translations = {
-  en: {
-    sysTitle: "Health Monitoring System", home: "Home", about: "About Us", contact: "Contact Us",
-    language: "Language", tagline: "Smart Health Monitoring for a Better Tomorrow",
-    emailHint: "Enter Email", passwordHint: "Enter Password", showPw: "Show password",
-    login: "Login", signup: "Sign Up", forgot: "Forgot Password?",
-    newUser: "You are a new user. Please register first.",
-    invalid: "Invalid email or password.", success: "Login successful!",
-    fontPlus: "Increase text size", fontMinus: "Decrease text size",
-    contrast: "High contrast", readAloud: "Read page aloud"
-  },
-  ta: {
-    sysTitle: "சுகாதார கண்காணிப்பு அமைப்பு", home: "முகப்பு", about: "எங்களைப் பற்றி", contact: "தொடர்புக்கு",
-    language: "மொழி", tagline: "சிறந்த நாளைக்கான ஸ்மார்ட் சுகாதார கண்காணிப்பு",
-    emailHint: "மின்னஞ்சலை உள்ளிடவும்", passwordHint: "கடவுச்சொல்லை உள்ளிடவும்", showPw: "கடவுச்சொல்லைக் காட்டு",
-    login: "உள்நுழை", signup: "பதிவு செய்", forgot: "கடவுச்சொல் மறந்துவிட்டதா?",
-    newUser: "நீங்கள் புதிய பயனர். முதலில் பதிவு செய்யவும்.",
-    invalid: "மின்னஞ்சல் அல்லது கடவுச்சொல் தவறானது.", success: "உள்நுழைவு வெற்றி!",
-    fontPlus: "எழுத்தைப் பெரிதாக்கு", fontMinus: "எழுத்தைச் சிறிதாக்கு",
-    contrast: "அதிக வேறுபாடு", readAloud: "பக்கத்தை வாசி"
-  },
-  hi: {
-    sysTitle: "स्वास्थ्य निगरानी प्रणाली", home: "होम", about: "हमारे बारे में", contact: "संपर्क करें",
-    language: "भाषा", tagline: "बेहतर कल के लिए स्मार्ट स्वास्थ्य निगरानी",
-    emailHint: "ईमेल दर्ज करें", passwordHint: "पासवर्ड दर्ज करें", showPw: "पासवर्ड दिखाएं",
-    login: "लॉग इन", signup: "साइन अप", forgot: "पासवर्ड भूल गए?",
-    newUser: "आप नए उपयोगकर्ता हैं। कृपया पहले रजिस्टर करें।",
-    invalid: "ईमेल या पासवर्ड गलत है।", success: "लॉगिन सफल!",
-    fontPlus: "अक्षर बड़े करें", fontMinus: "अक्षर छोटे करें",
-    contrast: "उच्च कंट्रास्ट", readAloud: "पेज पढ़कर सुनाएं"
-  }
-  // te, kn, ml, bn, mr, gu, pa, or, ur → inge same keys-oda add pannalaam
+en: {
+sysTitle:"Health Monitoring System", home:"Home", about:"About Us",
+contact:"Contact Us", tagline:"Smart Health Monitoring for a Better Tomorrow",
+emailLabel:"Email", passwordLabel:"Password", emailHint:"Enter Email",
+passwordHint:"Enter Password", showPw:"Show Password", login:"Login",
+signup:"Sign Up", forgot:"Forgot Password?", read:"🔊 Read Page",
+fontPlus:"A+ Increase Text", fontMinus:"A- Decrease Text",
+contrast:"High Contrast", language:"Select Language",
+choose:"Choose Your Language",
+description:"Select your preferred language to continue.",
+continue:"Continue", newUser:"Please register first.",
+invalid:"Invalid email or password.", success:"Login successful!",
+footer:"Health Monitoring System | All Rights Reserved"
+},
+ta: {
+sysTitle:"சுகாதார கண்காணிப்பு அமைப்பு", home:"முகப்பு",
+about:"எங்களைப் பற்றி", contact:"தொடர்புக்கு",
+tagline:"சிறந்த நாளைக்கான ஸ்மார்ட் சுகாதார கண்காணிப்பு",
+emailLabel:"மின்னஞ்சல்", passwordLabel:"கடவுச்சொல்",
+emailHint:"மின்னஞ்சலை உள்ளிடவும்", passwordHint:"கடவுச்சொல்லை உள்ளிடவும்",
+showPw:"கடவுச்சொல்லைக் காட்டு", login:"உள்நுழை",
+signup:"பதிவு செய்", forgot:"கடவுச்சொல் மறந்துவிட்டதா?",
+read:"🔊 பக்கத்தை வாசி", fontPlus:"எழுத்தைப் பெரிதாக்கு",
+fontMinus:"எழுத்தைச் சிறிதாக்கு", contrast:"அதிக வேறுபாடு",
+language:"மொழியைத் தேர்ந்தெடுக்கவும்",
+choose:"உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்",
+description:"தொடர உங்களுக்கு விருப்பமான மொழியைத் தேர்ந்தெடுக்கவும்.",
+continue:"தொடரவும்", newUser:"முதலில் பதிவு செய்யவும்.",
+invalid:"மின்னஞ்சல் அல்லது கடவுச்சொல் தவறானது.",
+success:"உள்நுழைவு வெற்றி!",
+footer:"சுகாதார கண்காணிப்பு அமைப்பு | அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை"
+},
+hi: {
+sysTitle:"स्वास्थ्य निगरानी प्रणाली", home:"होम",
+about:"हमारे बारे में", contact:"संपर्क करें",
+tagline:"बेहतर कल के लिए स्मार्ट स्वास्थ्य निगरानी",
+emailLabel:"ईमेल", passwordLabel:"पासवर्ड",
+emailHint:"ईमेल दर्ज करें", passwordHint:"पासवर्ड दर्ज करें",
+showPw:"पासवर्ड दिखाएं", login:"लॉग इन",
+signup:"साइन अप", forgot:"पासवर्ड भूल गए?",
+read:"🔊 पेज पढ़कर सुनाएं", fontPlus:"अक्षर बड़े करें",
+fontMinus:"अक्षर छोटे करें", contrast:"उच्च कंट्रास्ट",
+language:"भाषा चुनें", choose:"अपनी भाषा चुनें",
+description:"जारी रखने के लिए अपनी पसंदीदा भाषा चुनें।",
+continue:"जारी रखें", newUser:"कृपया पहले पंजीकरण करें।",
+invalid:"ईमेल या पासवर्ड गलत है।", success:"लॉगिन सफल!",
+footer:"स्वास्थ्य निगरानी प्रणाली | सर्वाधिकार सुरक्षित"
+},
+te: {
+sysTitle:"ఆరోగ్య పర్యవేక్షణ వ్యవస్థ", home:"హోమ్",
+about:"మా గురించి", contact:"సంప్రదించండి",
+tagline:"మెరుగైన రేపటి కోసం స్మార్ట్ ఆరోగ్య పర్యవేక్షణ",
+emailLabel:"ఈమెయిల్", passwordLabel:"పాస్‌వర్డ్",
+emailHint:"ఈమెయిల్ నమోదు చేయండి", passwordHint:"పాస్‌వర్డ్ నమోదు చేయండి",
+showPw:"పాస్‌వర్డ్ చూపించు", login:"లాగిన్",
+signup:"నమోదు", forgot:"పాస్‌వర్డ్ మర్చిపోయారా?",
+read:"🔊 పేజీ చదవండి", fontPlus:"అక్షరాలను పెద్దగా చేయండి",
+fontMinus:"అక్షరాలను చిన్నగా చేయండి", contrast:"అధిక కాంట్రాస్ట్",
+language:"భాషను ఎంచుకోండి", choose:"మీ భాషను ఎంచుకోండి",
+description:"కొనసాగించడానికి మీకు ఇష్టమైన భాషను ఎంచుకోండి.",
+continue:"కొనసాగించండి", newUser:"దయచేసి ముందుగా నమోదు చేసుకోండి.",
+invalid:"ఈమెయిల్ లేదా పాస్‌వర్డ్ తప్పు.", success:"లాగిన్ విజయవంతమైంది!",
+footer:"ఆరోగ్య పర్యవేక్షణ వ్యవస్థ | అన్ని హక్కులు ప్రత్యేకించబడ్డాయి"
+},
+kn: {
+sysTitle:"ಆರೋಗ್ಯ ಮೇಲ್ವಿಚಾರಣಾ ವ್ಯವಸ್ಥೆ", home:"ಮುಖಪುಟ",
+about:"ನಮ್ಮ ಬಗ್ಗೆ", contact:"ಸಂಪರ್ಕಿಸಿ",
+tagline:"ಉತ್ತಮ ನಾಳೆಗಾಗಿ ಸ್ಮಾರ್ಟ್ ಆರೋಗ್ಯ ಮೇಲ್ವಿಚಾರಣೆ",
+emailLabel:"ಇಮೇಲ್", passwordLabel:"ಪಾಸ್‌ವರ್ಡ್",
+emailHint:"ಇಮೇಲ್ ನಮೂದಿಸಿ", passwordHint:"ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ",
+showPw:"ಪಾಸ್‌ವರ್ಡ್ ತೋರಿಸಿ", login:"ಲಾಗಿನ್",
+signup:"ನೋಂದಣಿ", forgot:"ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿರಾ?",
+read:"🔊 ಪುಟವನ್ನು ಓದಿ", fontPlus:"ಅಕ್ಷರ ದೊಡ್ಡದಾಗಿಸಿ",
+fontMinus:"ಅಕ್ಷರ ಚಿಕ್ಕದಾಗಿಸಿ", contrast:"ಹೆಚ್ಚಿನ ಕಾಂಟ್ರಾಸ್ಟ್",
+language:"ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ", choose:"ನಿಮ್ಮ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+description:"ಮುಂದುವರಿಯಲು ನಿಮ್ಮ ಇಷ್ಟದ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
+continue:"ಮುಂದುವರಿಸಿ", newUser:"ದಯವಿಟ್ಟು ಮೊದಲು ನೋಂದಾಯಿಸಿ.",
+invalid:"ಇಮೇಲ್ ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್ ತಪ್ಪಾಗಿದೆ.", success:"ಲಾಗಿನ್ ಯಶಸ್ವಿಯಾಗಿದೆ!",
+footer:"ಆರೋಗ್ಯ ಮೇಲ್ವಿಚಾರಣಾ ವ್ಯವಸ್ಥೆ | ಎಲ್ಲಾ ಹಕ್ಕುಗಳನ್ನು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ"
+},
+ml: {
+sysTitle:"ആരോഗ്യ നിരീക്ഷണ സംവിധാനം", home:"ഹോം",
+about:"ഞങ്ങളെക്കുറിച്ച്", contact:"ബന്ധപ്പെടുക",
+tagline:"മികച്ച നാളേക്കായി സ്മാർട്ട് ആരോഗ്യ നിരീക്ഷണം",
+emailLabel:"ഇമെയിൽ", passwordLabel:"പാസ്‌വേഡ്",
+emailHint:"ഇമെയിൽ നൽകുക", passwordHint:"പാസ്‌വേഡ് നൽകുക",
+showPw:"പാസ്‌വേഡ് കാണിക്കുക", login:"ലോഗിൻ",
+signup:"രജിസ്റ്റർ ചെയ്യുക", forgot:"പാസ്‌വേഡ് മറന്നോ?",
+read:"🔊 പേജ് വായിക്കുക", fontPlus:"അക്ഷരങ്ങൾ വലുതാക്കുക",
+fontMinus:"അക്ഷരങ്ങൾ ചെറുതാക്കുക", contrast:"ഉയർന്ന കോൺട്രാസ്റ്റ്",
+language:"ഭാഷ തിരഞ്ഞെടുക്കുക", choose:"നിങ്ങളുടെ ഭാഷ തിരഞ്ഞെടുക്കുക",
+description:"തുടരാൻ ഇഷ്ടമുള്ള ഭാഷ തിരഞ്ഞെടുക്കുക.",
+continue:"തുടരുക", newUser:"ആദ്യം രജിസ്റ്റർ ചെയ്യുക.",
+invalid:"ഇമെയിൽ അല്ലെങ്കിൽ പാസ്‌വേഡ് തെറ്റാണ്.",
+success:"ലോഗിൻ വിജയിച്ചു!",
+footer:"ആരോഗ്യ നിരീക്ഷണ സംവിധാനം | എല്ലാ അവകാശങ്ങളും സംരക്ഷിച്ചിരിക്കുന്നു"
+},
+bn: {
+sysTitle:"স্বাস্থ্য পর্যবেক্ষণ ব্যবস্থা", home:"হোম",
+about:"আমাদের সম্পর্কে", contact:"যোগাযোগ",
+tagline:"উন্নত আগামীর জন্য স্মার্ট স্বাস্থ্য পর্যবেক্ষণ",
+emailLabel:"ইমেল", passwordLabel:"পাসওয়ার্ড",
+emailHint:"ইমেল লিখুন", passwordHint:"পাসওয়ার্ড লিখুন",
+showPw:"পাসওয়ার্ড দেখান", login:"লগ ইন",
+signup:"নিবন্ধন করুন", forgot:"পাসওয়ার্ড ভুলে গেছেন?",
+read:"🔊 পৃষ্ঠা পড়ুন", fontPlus:"লেখা বড় করুন",
+fontMinus:"লেখা ছোট করুন", contrast:"উচ্চ কনট্রাস্ট",
+language:"ভাষা নির্বাচন করুন", choose:"আপনার ভাষা নির্বাচন করুন",
+description:"চালিয়ে যেতে আপনার পছন্দের ভাষা নির্বাচন করুন।",
+continue:"চালিয়ে যান", newUser:"অনুগ্রহ করে আগে নিবন্ধন করুন।",
+invalid:"ইমেল বা পাসওয়ার্ড ভুল।", success:"লগ ইন সফল হয়েছে!",
+footer:"স্বাস্থ্য পর্যবেক্ষণ ব্যবস্থা | সর্বস্বত্ব সংরক্ষিত"
+},
+mr: {
+sysTitle:"आरोग्य देखरेख प्रणाली", home:"मुख्यपृष्ठ",
+about:"आमच्याबद्दल", contact:"संपर्क",
+tagline:"उत्तम भविष्यासाठी स्मार्ट आरोग्य देखरेख",
+emailLabel:"ईमेल", passwordLabel:"पासवर्ड",
+emailHint:"ईमेल टाका", passwordHint:"पासवर्ड टाका",
+showPw:"पासवर्ड दाखवा", login:"लॉग इन",
+signup:"नोंदणी करा", forgot:"पासवर्ड विसरलात?",
+read:"🔊 पान वाचून दाखवा", fontPlus:"अक्षरे मोठी करा",
+fontMinus:"अक्षरे लहान करा", contrast:"उच्च कॉन्ट्रास्ट",
+language:"भाषा निवडा", choose:"तुमची भाषा निवडा",
+description:"पुढे जाण्यासाठी तुमची आवडती भाषा निवडा.",
+continue:"पुढे जा", newUser:"कृपया प्रथम नोंदणी करा.",
+invalid:"ईमेल किंवा पासवर्ड चुकीचा आहे.", success:"लॉग इन यशस्वी!",
+footer:"आरोग्य देखरेख प्रणाली | सर्व हक्क राखीव"
+},
+gu: {
+sysTitle:"આરોગ્ય દેખરેખ પ્રણાલી", home:"હોમ",
+about:"અમારા વિશે", contact:"સંપર્ક",
+tagline:"સારા આવતીકાલ માટે સ્માર્ટ આરોગ્ય દેખરેખ",
+emailLabel:"ઈમેઇલ", passwordLabel:"પાસવર્ડ",
+emailHint:"ઈમેઇલ દાખલ કરો", passwordHint:"પાસવર્ડ દાખલ કરો",
+showPw:"પાસવર્ડ બતાવો", login:"લૉગ ઇન",
+signup:"નોંધણી કરો", forgot:"પાસવર્ડ ભૂલી ગયા?",
+read:"🔊 પાનું વાંચો", fontPlus:"અક્ષરો મોટા કરો",
+fontMinus:"અક્ષરો નાના કરો", contrast:"હાઈ કોન્ટ્રાસ્ટ",
+language:"ભાષા પસંદ કરો", choose:"તમારી ભાષા પસંદ કરો",
+description:"આગળ વધવા માટે તમારી પસંદગીની ભાષા પસંદ કરો.",
+continue:"આગળ વધો", newUser:"કૃપા કરીને પહેલાં નોંધણી કરો.",
+invalid:"ઈમેઇલ અથવા પાસવર્ડ ખોટો છે.", success:"લૉગ ઇન સફળ!",
+footer:"આરોગ્ય દેખરેખ પ્રણાલી | સર્વાધિકાર સુરક્ષિત"
+},
+pa: {
+sysTitle:"ਸਿਹਤ ਨਿਗਰਾਨੀ ਪ੍ਰਣਾਲੀ", home:"ਮੁੱਖ ਪੰਨਾ",
+about:"ਸਾਡੇ ਬਾਰੇ", contact:"ਸੰਪਰਕ",
+tagline:"ਬਿਹਤਰ ਭਵਿੱਖ ਲਈ ਸਮਾਰਟ ਸਿਹਤ ਨਿਗਰਾਨੀ",
+emailLabel:"ਈਮੇਲ", passwordLabel:"ਪਾਸਵਰਡ",
+emailHint:"ਈਮੇਲ ਦਰਜ ਕਰੋ", passwordHint:"ਪਾਸਵਰਡ ਦਰਜ ਕਰੋ",
+showPw:"ਪਾਸਵਰਡ ਦਿਖਾਓ", login:"ਲਾਗਇਨ",
+signup:"ਰਜਿਸਟਰ ਕਰੋ", forgot:"ਪਾਸਵਰਡ ਭੁੱਲ ਗਏ?",
+read:"🔊 ਪੰਨਾ ਪੜ੍ਹੋ", fontPlus:"ਅੱਖਰ ਵੱਡੇ ਕਰੋ",
+fontMinus:"ਅੱਖਰ ਛੋਟੇ ਕਰੋ", contrast:"ਉੱਚ ਕੰਟ੍ਰਾਸਟ",
+language:"ਭਾਸ਼ਾ ਚੁਣੋ", choose:"ਆਪਣੀ ਭਾਸ਼ਾ ਚੁਣੋ",
+description:"ਜਾਰੀ ਰੱਖਣ ਲਈ ਆਪਣੀ ਪਸੰਦੀਦਾ ਭਾਸ਼ਾ ਚੁਣੋ।",
+continue:"ਜਾਰੀ ਰੱਖੋ", newUser:"ਕਿਰਪਾ ਕਰਕੇ ਪਹਿਲਾਂ ਰਜਿਸਟਰ ਕਰੋ।",
+invalid:"ਈਮੇਲ ਜਾਂ ਪਾਸਵਰਡ ਗਲਤ ਹੈ।", success:"ਲਾਗਇਨ ਸਫਲ!",
+footer:"ਸਿਹਤ ਨਿਗਰਾਨੀ ਪ੍ਰਣਾਲੀ | ਸਾਰੇ ਹੱਕ ਰਾਖਵੇਂ ਹਨ"
+},
+or: {
+sysTitle:"ସ୍ୱାସ୍ଥ୍ୟ ନିରୀକ୍ଷଣ ବ୍ୟବସ୍ଥା", home:"ମୁଖ୍ୟ ପୃଷ୍ଠା",
+about:"ଆମ ବିଷୟରେ", contact:"ଯୋଗାଯୋଗ",
+tagline:"ଉତ୍ତମ ଆସନ୍ତାକାଲି ପାଇଁ ସ୍ମାର୍ଟ ସ୍ୱାସ୍ଥ୍ୟ ନିରୀକ୍ଷଣ",
+emailLabel:"ଇମେଲ୍", passwordLabel:"ପାସୱାର୍ଡ",
+emailHint:"ଇମେଲ୍ ଲେଖନ୍ତୁ", passwordHint:"ପାସୱାର୍ଡ ଲେଖନ୍ତୁ",
+showPw:"ପାସୱାର୍ଡ ଦେଖାନ୍ତୁ", login:"ଲଗ୍ ଇନ୍",
+signup:"ପଞ୍ଜୀକରଣ କରନ୍ତୁ", forgot:"ପାସୱାର୍ଡ ଭୁଲିଗଲେ?",
+read:"🔊 ପୃଷ୍ଠା ପଢ଼ନ୍ତୁ", fontPlus:"ଅକ୍ଷର ବଡ଼ କରନ୍ତୁ",
+fontMinus:"ଅକ୍ଷର ଛୋଟ କରନ୍ତୁ", contrast:"ଉଚ୍ଚ କଣ୍ଟ୍ରାଷ୍ଟ",
+language:"ଭାଷା ବାଛନ୍ତୁ", choose:"ଆପଣଙ୍କ ଭାଷା ବାଛନ୍ତୁ",
+description:"ଆଗକୁ ବଢ଼ିବା ପାଇଁ ପସନ୍ଦର ଭାଷା ବାଛନ୍ତୁ।",
+continue:"ଆଗକୁ ବଢ଼ନ୍ତୁ", newUser:"ଦୟାକରି ପ୍ରଥମେ ପଞ୍ଜୀକରଣ କରନ୍ତୁ।",
+invalid:"ଇମେଲ୍ କିମ୍ବା ପାସୱାର୍ଡ ଭୁଲ।", success:"ଲଗ୍ ଇନ୍ ସଫଳ!",
+footer:"ସ୍ୱାସ୍ଥ୍ୟ ନିରୀକ୍ଷଣ ବ୍ୟବସ୍ଥା | ସମସ୍ତ ଅଧିକାର ସଂରକ୍ଷିତ"
+},
+ur: {
+sysTitle:"صحت کی نگرانی کا نظام", home:"صفحۂ اول",
+about:"ہمارے بارے میں", contact:"رابطہ",
+tagline:"بہتر مستقبل کے لیے اسمارٹ صحت کی نگرانی",
+emailLabel:"ای میل", passwordLabel:"پاس ورڈ",
+emailHint:"ای میل درج کریں", passwordHint:"پاس ورڈ درج کریں",
+showPw:"پاس ورڈ دکھائیں", login:"لاگ ان",
+signup:"رجسٹر کریں", forgot:"پاس ورڈ بھول گئے؟",
+read:"🔊 صفحہ سنیں", fontPlus:"حروف بڑے کریں",
+fontMinus:"حروف چھوٹے کریں", contrast:"ہائی کنٹراسٹ",
+language:"زبان منتخب کریں", choose:"اپنی زبان منتخب کریں",
+description:"جاری رکھنے کے لیے اپنی پسندیدہ زبان منتخب کریں۔",
+continue:"جاری رکھیں", newUser:"براہ کرم پہلے رجسٹر کریں۔",
+invalid:"ای میل یا پاس ورڈ غلط ہے۔", success:"لاگ ان کامیاب!",
+footer:"صحت کی نگرانی کا نظام | جملہ حقوق محفوظ ہیں"
+}
 };
 
 const speechLang = {
-  en: "en-IN", ta: "ta-IN", hi: "hi-IN", te: "te-IN", kn: "kn-IN", ml: "ml-IN",
-  bn: "bn-IN", mr: "mr-IN", gu: "gu-IN", pa: "pa-IN", or: "or-IN", ur: "ur-IN"
+    en:"en-IN", ta:"ta-IN", hi:"hi-IN", te:"te-IN",
+    kn:"kn-IN", ml:"ml-IN", bn:"bn-IN", mr:"mr-IN",
+    gu:"gu-IN", pa:"pa-IN", or:"or-IN", ur:"ur-PK"
 };
 
-/* ========== 2. HELPERS + LANGUAGE ========== */
 const langSelect = document.getElementById("langSelect");
+const languageScreen = document.getElementById("languageScreen");
 const msgBox = document.getElementById("formMsg");
 
+let currentLanguage = "en";
+
 function t(key) {
-  const code = document.documentElement.lang;
-  return (translations[code] && translations[code][key]) || translations.en[key] || key;
-}
-
-function speak(text) {
-  if (!("speechSynthesis" in window)) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = speechLang[document.documentElement.lang] || "en-IN";
-  speechSynthesis.speak(u);
-}
-
-function showMessage(text, type) {
-  msgBox.textContent = (type === "error" ? "⚠️ " : "✅ ") + text;
-  msgBox.className = "msg " + type;
-  if (type === "error" && navigator.vibrate) navigator.vibrate([200, 100, 200]);
-  speak(text);
+    return translations[currentLanguage]?.[key]
+        || translations.en[key]
+        || key;
 }
 
 function applyLanguage(code) {
-  if (!translations[code]) code = "en";
-  document.documentElement.lang = code;
-  document.documentElement.dir = (code === "ur") ? "rtl" : "ltr";
+    if (!translations[code]) code = "en";
 
-  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
-  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
-  document.querySelectorAll("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
+    currentLanguage = code;
 
-  langSelect.value = code;
-  msgBox.textContent = "";
-  msgBox.className = "msg";
-  try { localStorage.setItem("vc_lang", code); } catch (e) {}
+    document.documentElement.lang = code;
+    document.documentElement.dir = code === "ur" ? "rtl" : "ltr";
+
+    document.querySelectorAll("[data-i18n]").forEach(element => {
+        const key = element.dataset.i18n;
+        element.textContent = t(key);
+    });
+
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
+        element.placeholder = t(element.dataset.i18nPlaceholder);
+    });
+
+    document.getElementById("languageHeading").textContent = t("choose");
+    document.getElementById("languageDescription").textContent = t("description");
+    document.getElementById("languageLabel").textContent = t("language");
+    document.getElementById("continueBtn").textContent = t("continue");
+
+    langSelect.value = code;
+
+    msgBox.textContent = "";
+    msgBox.className = "msg";
+
+    try {
+        localStorage.setItem("vc_lang", code);
+    } catch (error) {
+        console.warn("Could not save language preference.");
+    }
 }
 
-langSelect.addEventListener("change", () => applyLanguage(langSelect.value));
+function speak(text) {
+    if (!("speechSynthesis" in window)) {
+        alert("Voice output is not supported by this browser.");
+        return;
+    }
 
-let savedLang = null;
-try { savedLang = localStorage.getItem("vc_lang"); } catch (e) {}
-const browserLang = (navigator.language || "en").slice(0, 2);
-applyLanguage(savedLang || (translations[browserLang] ? browserLang : "en"));
+    window.speechSynthesis.cancel();
 
-/* ========== 3. ACCESSIBILITY ========== */
-document.getElementById("showPw").addEventListener("change", e => {
-  document.getElementById("password").type = e.target.checked ? "text" : "password";
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = speechLang[currentLanguage] || "en-IN";
+
+    const voices = window.speechSynthesis.getVoices();
+    const voice = voices.find(v =>
+        v.lang.toLowerCase() === utterance.lang.toLowerCase()
+    );
+
+    if (voice) utterance.voice = voice;
+
+    window.speechSynthesis.speak(utterance);
+}
+
+/* First visit asks for language. Later visits use saved language. */
+let savedLanguage = null;
+
+try {
+    savedLanguage = localStorage.getItem("vc_lang");
+} catch (error) {}
+
+if (savedLanguage && translations[savedLanguage]) {
+    applyLanguage(savedLanguage);
+    languageScreen.hidden = true;
+} else {
+    applyLanguage("en");
+    languageScreen.hidden = false;
+}
+
+/* Preview translations when the user changes the dropdown. */
+langSelect.addEventListener("change", () => {
+    applyLanguage(langSelect.value);
 });
 
+/* Continue saves the selection and opens the login screen. */
+document.getElementById("continueBtn").addEventListener("click", () => {
+    applyLanguage(langSelect.value);
+    languageScreen.hidden = true;
+    document.getElementById("email").focus();
+    speak(t("tagline"));
+});
+
+/* Show/hide password. */
+document.getElementById("showPw").addEventListener("change", event => {
+    document.getElementById("password").type =
+        event.target.checked ? "text" : "password";
+});
+
+/* Font-size controls. */
 let fontScale = 100;
-try { fontScale = parseInt(localStorage.getItem("vc_font")) || 100; } catch (e) {}
-function setFont(v) {
-  fontScale = Math.max(80, Math.min(160, v));
-  document.documentElement.style.fontSize = fontScale + "%";
-  try { localStorage.setItem("vc_font", fontScale); } catch (e) {}
+
+try {
+    fontScale = parseInt(localStorage.getItem("vc_font"), 10) || 100;
+} catch (error) {}
+
+function setFont(value) {
+    fontScale = Math.max(80, Math.min(160, value));
+    document.documentElement.style.fontSize = fontScale + "%";
+
+    try {
+        localStorage.setItem("vc_font", String(fontScale));
+    } catch (error) {}
 }
+
 setFont(fontScale);
-document.getElementById("fontPlus").onclick  = () => setFont(fontScale + 10);
-document.getElementById("fontMinus").onclick = () => setFont(fontScale - 10);
 
-try { if (localStorage.getItem("vc_contrast") === "1") document.body.classList.add("high-contrast"); } catch (e) {}
+document.getElementById("fontPlus").onclick =
+    () => setFont(fontScale + 10);
+
+document.getElementById("fontMinus").onclick =
+    () => setFont(fontScale - 10);
+
+/* High contrast preference. */
+try {
+    if (localStorage.getItem("vc_contrast") === "1") {
+        document.body.classList.add("high-contrast");
+    }
+} catch (error) {}
+
 document.getElementById("contrastBtn").onclick = () => {
-  const on = document.body.classList.toggle("high-contrast");
-  try { localStorage.setItem("vc_contrast", on ? "1" : "0"); } catch (e) {}
+    const enabled = document.body.classList.toggle("high-contrast");
+
+    try {
+        localStorage.setItem("vc_contrast", enabled ? "1" : "0");
+    } catch (error) {}
 };
 
+/* Read important page content aloud. */
 document.getElementById("readBtn").onclick = () => {
-  speak([t("sysTitle"), "VitalCare", t("tagline"), t("emailHint"), t("passwordHint"), t("login")].join(". "));
+    speak([
+        t("sysTitle"), "VitalCare", t("tagline"),
+        t("emailLabel"), t("passwordLabel"), t("login"),
+        t("signup"), t("forgot")
+    ].join(". "));
 };
 
-/* ========== 4. LOGIN (ungal pazhaya logic, alert mattum maathirukku) ========== */
-function loginUser() {
-  let email = document.getElementById("email").value.trim();
-  let password = document.getElementById("password").value;
-
-  let storedEmail = localStorage.getItem("userEmail");
-  let storedPassword = localStorage.getItem("userPassword");
-
-  if (!storedEmail) {
-    showMessage(t("newUser"), "error");
-    setTimeout(() => { window.location.href = "signup.html"; }, 3500);
-    return false;
-  }
-
-  if (email === storedEmail && password === storedPassword) {
-    showMessage(t("success"), "success");
-    setTimeout(() => { window.location.href = "patient.html"; }, 1500);
-    return false;
-  } else {
-    showMessage(t("invalid"), "error");
-    return false;
-  }
+function showMessage(message, type) {
+    msgBox.textContent = (type === "error" ? "⚠ " : "✓ ") + message;
+    msgBox.className = "msg " + type;
+    speak(message);
 }
+
+/*
+ DEMO LOGIN ONLY:
+ This retains the original project's localStorage-based login.
+ It is not secure authentication for real users.
+*/
+document.getElementById("loginForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    let storedEmail = null;
+    let storedPassword = null;
+
+    try {
+        storedEmail = localStorage.getItem("userEmail");
+        storedPassword = localStorage.getItem("userPassword");
+    } catch (error) {}
+
+    if (!storedEmail || !storedPassword) {
+        showMessage(t("newUser"), "error");
+
+        setTimeout(() => {
+            window.location.href = "signup.html";
+        }, 2500);
+
+        return;
+    }
+
+    if (email === storedEmail && password === storedPassword) {
+        showMessage(t("success"), "success");
+
+        setTimeout(() => {
+            window.location.href = "patient.html";
+        }, 1200);
+    } else {
+        showMessage(t("invalid"), "error");
+    }
+});
 </script>
 
 </body>
 </html>
+
+
+  
+   
+   
+
+
+
+
+
+
+
+
+
+
