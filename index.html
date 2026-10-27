@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,78 +6,128 @@
 <title>VitalCare Login</title>
 
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;font-family:Arial,sans-serif;min-height:100vh;
-  color:white;background:linear-gradient(120deg,#102b38,#087e83);
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  color: white;
+  background:
+    linear-gradient(110deg, rgba(4,19,29,.88), rgba(7,45,61,.65)),
+    url("ui.jpeg") center/cover fixed;
 }
-header{
-  padding:18px 5%;display:flex;justify-content:space-between;
-  align-items:center;flex-wrap:wrap;background:#102b38;
+
+header {
+  padding: 18px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  background: rgba(20,35,40,.72);
 }
-.logo{font-size:25px;font-weight:bold;color:#4ce0c1}
-nav{display:flex;gap:18px}
-nav a{color:white;text-decoration:none}
-main{width:min(620px,94%);margin:25px auto;text-align:center}
-h1{font-size:42px;margin-bottom:8px}
-.panel{
-  background:#ffffff1c;padding:25px;margin:20px auto;
-  border-radius:15px;max-width:440px;text-align:left;
+
+.brand { font-size: 25px; font-weight: bold; color: #00d6b0; }
+
+nav { display: flex; gap: 20px; flex-wrap: wrap; }
+nav a, .links a { color: white; }
+
+main {
+  width: min(650px, 100%);
+  margin: 25px auto;
+  padding: 16px;
+  text-align: center;
 }
-.panel h2{text-align:center}
-label{display:block;margin:14px 0 6px}
-input,select,button{
-  width:100%;padding:12px;border-radius:8px;
-  font-size:16px;margin:5px 0;
+
+h1 { font-size: 42px; margin: 12px 0; }
+.subtitle { font-size: 19px; line-height: 1.5; }
+
+.panel {
+  max-width: 430px;
+  margin: 20px auto;
+  padding: 24px;
+  border-radius: 15px;
+  background: rgba(255,255,255,.17);
+  box-shadow: 0 8px 25px #0003;
 }
-input,select{border:1px solid #ccc;background:white;color:#111}
-button{cursor:pointer;border:0;font-weight:bold}
-.primary{background:#00b99a;color:white}
-.secondary{background:#edf5f5;color:#123}
-.hidden{display:none!important}
-.status{min-height:22px;line-height:1.5}
-.tools{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
-.tools button{width:auto;background:#fff;color:#123}
-.row{display:flex;gap:10px}
-.row button{flex:1}
-a:focus,button:focus,input:focus,select:focus{
-  outline:3px solid #ffd166;outline-offset:2px
+
+label { display: block; text-align: left; margin: 14px 0 7px; }
+
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font: inherit;
 }
-body.contrast{background:#000;color:#fff}
-body.contrast .panel,body.contrast header{background:#000;border:2px solid white}
-body.big{font-size:125%}
-footer{text-align:center;padding:20px}
+
+input, select { background: #fff; color: #17202a; border: 1px solid #ccc; }
+
+button { cursor: pointer; margin-top: 12px; }
+
+.primary {
+  background: #00b99a;
+  color: white;
+  border: 0;
+  font-weight: bold;
+}
+
+.secondary {
+  background: #263b45;
+  color: white;
+  border: 1px solid white;
+}
+
+.hidden { display: none !important; }
+
+.status { min-height: 24px; line-height: 1.5; }
+
+.choice-row { display: flex; gap: 12px; }
+.choice-row button { flex: 1; }
+
+.links { line-height: 2; margin-top: 15px; }
+.nav-row { display: flex; gap: 10px; }
+.nav-row button { flex: 1; }
+
+:focus-visible { outline: 3px solid #ffd166; outline-offset: 3px; }
+
+[dir="rtl"] { text-align: right; }
+
+footer { text-align: center; padding: 18px; }
+
+@media(max-width: 520px) {
+  header { justify-content: center; }
+  nav { justify-content: center; }
+  h1 { font-size: 35px; }
+  .choice-row { flex-direction: column; gap: 0; }
+}
 </style>
 </head>
 
 <body>
 <header>
-  <div class="logo">VitalCare</div>
-  <nav aria-label="Main navigation">
-    <a href="home.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
+  <div class="brand">VitalCare</div>
+  <nav>
+    <a href="home.html" data-t="home">Home</a>
+    <a href="about.html" data-t="about">About</a>
+    <a href="contact.html" data-t="contact">Contact</a>
   </nav>
 </header>
 
 <main>
   <h1>VitalCare</h1>
-  <p id="subtitle">Smart healthcare monitoring for a healthier tomorrow.</p>
+  <p class="subtitle" data-t="subtitle">
+    Smart healthcare monitoring for a healthier tomorrow
+  </p>
 
-  <div class="tools">
-    <button id="readPage" type="button">🔊 Read page</button>
-    <button id="fontDown" type="button">A−</button>
-    <button id="fontUp" type="button">A+</button>
-    <button id="contrast" type="button">Contrast</button>
-    <button id="voiceToggle" type="button">Voice ON/OFF</button>
-  </div>
+  <p id="status" class="status" role="status" aria-live="polite"></p>
 
-  <p id="status" class="status" aria-live="polite"></p>
+  <!-- LANGUAGE SELECTION -->
+  <section class="panel" id="languagePage">
+    <h2 data-t="chooseLanguage">Choose your language</h2>
 
-  <!-- STEP 1: LANGUAGE -->
-  <section id="languageStep" class="panel">
-    <h2 id="languageHeading">Choose your language</h2>
-    <label for="language">Language</label>
+    <label for="language" data-t="languageLabel">Select language</label>
+
     <select id="language">
       <option value="en">English</option>
       <option value="ta">தமிழ்</option>
@@ -93,47 +142,66 @@ footer{text-align:center;padding:20px}
       <option value="or">ଓଡ଼ିଆ</option>
       <option value="ur">اردو</option>
     </select>
-    <button class="primary" id="nextLanguage" type="button">Next</button>
+
+    <button class="primary" id="languageNext" data-t="next">Next</button>
   </section>
 
-  <!-- STEP 2: ACCESSIBILITY QUESTION -->
-  <section id="accessStep" class="panel hidden">
-    <h2 id="accessQuestion">Are you blind or do you have difficulty seeing?</h2>
-    <p id="accessHint">Say Yes or No. You can also select a button.</p>
-    <div class="row">
-      <button class="primary" id="yesButton" type="button">Yes</button>
-      <button class="secondary" id="noButton" type="button">No</button>
+  <!-- VISION QUESTION -->
+  <section class="panel hidden" id="visionPage">
+    <h2 data-t="visionQuestion">
+      Are you blind or do you have difficulty seeing?
+    </h2>
+
+    <p data-t="sayYesNo">Please say Yes or No.</p>
+
+    <div class="choice-row">
+      <button class="primary" id="yesButton" data-t="yes">Yes</button>
+      <button class="secondary" id="noButton" data-t="no">No</button>
     </div>
-    <button class="secondary" id="repeatButton" type="button">Repeat question</button>
-    <button class="secondary" id="backLanguage" type="button">Back</button>
+
+    <button class="secondary" id="repeatButton" data-t="repeat">
+      Repeat question
+    </button>
+
+    <button class="secondary" id="backLanguage" data-t="back">
+      Back
+    </button>
   </section>
 
-  <!-- STEP 3: LOGIN -->
-  <section id="loginStep" class="panel hidden">
-    <h2 id="loginHeading">Login to VitalCare</h2>
+  <!-- LOGIN -->
+  <section class="panel hidden" id="loginPage">
+    <h2 data-t="loginTitle">Login to VitalCare</h2>
+
     <form id="loginForm">
-      <label for="email" id="emailLabel">Email address</label>
+      <label for="email" data-t="email">Email address</label>
       <input id="email" type="email" autocomplete="username" required>
-      <button class="secondary" id="emailVoice" type="button">🎙️ Speak email</button>
 
-      <label for="password" id="passwordLabel">Password</label>
-      <input id="password" type="password" autocomplete="current-password" required>
+      <label for="password" data-t="password">Password</label>
+      <input id="password" type="password"
+             autocomplete="current-password" required>
 
-      <label>
-        <input id="showPassword" type="checkbox" style="width:auto">
-        Show password
-      </label>
-      <button class="secondary" id="passwordVoice" type="button">
-        🎙️ Speak password (avoid in public)
+      <button type="button" class="secondary" id="speakEmail">
+        <span data-t="emailVoice">Speak email address</span>
       </button>
 
-      <button class="primary" type="submit" id="loginButton">Login</button>
-      <p id="loginMessage" aria-live="polite"></p>
+      <label>
+        <input type="checkbox" id="showPassword" style="width:auto">
+        <span data-t="showPassword">Show password</span>
+      </label>
+
+      <p id="loginMessage" class="status" aria-live="polite"></p>
+
+      <button type="submit" class="primary" data-t="loginButton">
+        Login
+      </button>
     </form>
 
-    <p><a href="signup.html" style="color:white">Create account</a></p>
-    <p><a href="forgot.html" style="color:white">Forgot password?</a></p>
-    <button class="secondary" id="backAccess" type="button">Back</button>
+    <div class="links">
+      <a href="signup.html" data-t="signup">Create an account</a><br>
+      <a href="forgot.html" data-t="forgot">Forgot password?</a>
+    </div>
+
+    <button class="secondary" id="backVision" data-t="back">Back</button>
   </section>
 </main>
 
@@ -142,286 +210,492 @@ footer{text-align:center;padding:20px}
 <script>
 "use strict";
 
+/* UI translations */
+const translations = {
+en: {
+ home:"Home", about:"About", contact:"Contact",
+ subtitle:"Smart healthcare monitoring for a healthier tomorrow",
+ chooseLanguage:"Choose your language", languageLabel:"Select language",
+ next:"Next", visionQuestion:"Are you blind or do you have difficulty seeing?",
+ sayYesNo:"Please say Yes or No.", yes:"Yes", no:"No", repeat:"Repeat question",
+ back:"Back", loginTitle:"Login to VitalCare", email:"Email address",
+ password:"Password", emailVoice:"Speak email address",
+ showPassword:"Show password", loginButton:"Login",
+ signup:"Create an account", forgot:"Forgot password?",
+ questionAgain:"Sorry, I didn't understand. Please say Yes or No.",
+ emailPrompt:"Please say your email address.",
+ emailError:"I couldn't recognize your email. Please say it again.",
+ emailDone:"Your email has been entered. Please enter your password.",
+ micError:"Microphone permission is needed. Please allow microphone access.",
+ unsupported:"Voice recognition is not supported in this browser.",
+ loginNotice:"Connect this form to your secure login backend."
+},
+ta: {
+ home:"முகப்பு", about:"எங்களைப் பற்றி", contact:"தொடர்பு",
+ subtitle:"ஆரோக்கியமான நாளைக்கான சுகாதார கண்காணிப்பு",
+ chooseLanguage:"உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்",
+ languageLabel:"மொழியைத் தேர்ந்தெடுக்கவும்", next:"அடுத்து",
+ visionQuestion:"உங்களுக்கு பார்வைக் குறைபாடு உள்ளதா அல்லது பார்க்க சிரமமாக உள்ளதா?",
+ sayYesNo:"ஆம் அல்லது இல்லை என்று சொல்லுங்கள்.",
+ yes:"ஆம்", no:"இல்லை", repeat:"கேள்வியை மீண்டும் கேள்",
+ back:"பின்னால்", loginTitle:"VitalCare உள்நுழைவு",
+ email:"மின்னஞ்சல் முகவரி", password:"கடவுச்சொல்",
+ emailVoice:"மின்னஞ்சலைச் சொல்லுங்கள்", showPassword:"கடவுச்சொல்லைக் காட்டு",
+ loginButton:"உள்நுழை", signup:"கணக்கை உருவாக்கு",
+ forgot:"கடவுச்சொல் மறந்துவிட்டதா?",
+ questionAgain:"புரியவில்லை. ஆம் அல்லது இல்லை என்று சொல்லுங்கள்.",
+ emailPrompt:"உங்கள் மின்னஞ்சல் முகவரியைச் சொல்லுங்கள்.",
+ emailError:"மின்னஞ்சலைப் புரிந்துகொள்ள முடியவில்லை. மீண்டும் சொல்லுங்கள்.",
+ emailDone:"மின்னஞ்சல் நிரப்பப்பட்டது. கடவுச்சொல்லை உள்ளிடுங்கள்.",
+ micError:"மைக்ரோஃபோன் அனுமதி தேவை.",
+ unsupported:"இந்த உலாவியில் குரல் அடையாளம் காணுதல் ஆதரிக்கப்படவில்லை.",
+ loginNotice:"பாதுகாப்பான login backend-ஐ இணைக்க வேண்டும்.",
+},
+hi: {
+ home:"होम", about:"हमारे बारे में", contact:"संपर्क",
+ subtitle:"बेहतर स्वास्थ्य के लिए स्मार्ट स्वास्थ्य निगरानी",
+ chooseLanguage:"अपनी भाषा चुनें", languageLabel:"भाषा चुनें",
+ next:"आगे", visionQuestion:"क्या आपको दिखाई नहीं देता या देखने में कठिनाई होती है?",
+ sayYesNo:"कृपया हाँ या नहीं बोलें।", yes:"हाँ", no:"नहीं",
+ repeat:"प्रश्न दोबारा सुनें", back:"वापस", loginTitle:"VitalCare लॉगिन",
+ email:"ईमेल पता", password:"पासवर्ड", emailVoice:"ईमेल बोलें",
+ showPassword:"पासवर्ड दिखाएँ", loginButton:"लॉगिन",
+ signup:"खाता बनाएँ", forgot:"पासवर्ड भूल गए?",
+ questionAgain:"समझ नहीं आया। कृपया हाँ या नहीं बोलें।",
+ emailPrompt:"अपना ईमेल पता बोलें।", emailError:"ईमेल समझ नहीं आया। फिर से बोलें।",
+ emailDone:"ईमेल भर दिया गया है। पासवर्ड दर्ज करें।",
+ micError:"माइक्रोफ़ोन की अनुमति दें।",
+ unsupported:"इस ब्राउज़र में आवाज़ पहचान उपलब्ध नहीं है।",
+ loginNotice:"सुरक्षित login backend जोड़ना आवश्यक है।"
+},
+te: {
+ home:"హోమ్", about:"మా గురించి", contact:"సంప్రదించండి",
+ subtitle:"మెరుగైన ఆరోగ్యం కోసం స్మార్ట్ ఆరోగ్య పర్యవేక్షణ",
+ chooseLanguage:"మీ భాషను ఎంచుకోండి", languageLabel:"భాషను ఎంచుకోండి",
+ next:"తర్వాత", visionQuestion:"మీకు చూపు సమస్య లేదా చూడటంలో ఇబ్బంది ఉందా?",
+ sayYesNo:"అవును లేదా కాదు అని చెప్పండి.", yes:"అవును", no:"కాదు",
+ repeat:"ప్రశ్న మళ్లీ వినండి", back:"వెనక్కి", loginTitle:"VitalCare లాగిన్",
+ email:"ఇమెయిల్", password:"పాస్‌వర్డ్", emailVoice:"ఇమెయిల్ చెప్పండి",
+ showPassword:"పాస్‌వర్డ్ చూపించు", loginButton:"లాగిన్",
+ signup:"ఖాతా సృష్టించండి", forgot:"పాస్‌వర్డ్ మర్చిపోయారా?",
+ questionAgain:"అర్థం కాలేదు. అవును లేదా కాదు అని చెప్పండి.",
+ emailPrompt:"మీ ఇమెయిల్ చెప్పండి.", emailError:"ఇమెయిల్ గుర్తించలేకపోయాను. మళ్లీ చెప్పండి.",
+ emailDone:"ఇమెయిల్ నమోదు అయింది. పాస్‌వర్డ్ నమోదు చేయండి.",
+ micError:"మైక్రోఫోన్ అనుమతి ఇవ్వండి.",
+ unsupported:"ఈ బ్రౌజర్‌లో వాయిస్ గుర్తింపు అందుబాటులో లేదు.",
+ loginNotice:"సురక్షిత login backend‌ను కనెక్ట్ చేయాలి."
+},
+kn: {
+ home:"ಮುಖಪುಟ", about:"ನಮ್ಮ ಬಗ್ಗೆ", contact:"ಸಂಪರ್ಕ",
+ subtitle:"ಉತ್ತಮ ಆರೋಗ್ಯಕ್ಕಾಗಿ ಸ್ಮಾರ್ಟ್ ಆರೋಗ್ಯ ಮೇಲ್ವಿಚಾರಣೆ",
+ chooseLanguage:"ನಿಮ್ಮ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ", languageLabel:"ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ",
+ next:"ಮುಂದೆ", visionQuestion:"ನಿಮಗೆ ದೃಷ್ಟಿ ಸಮಸ್ಯೆ ಅಥವಾ ನೋಡಲು ತೊಂದರೆ ಇದೆಯೇ?",
+ sayYesNo:"ಹೌದು ಅಥವಾ ಇಲ್ಲ ಎಂದು ಹೇಳಿ.", yes:"ಹೌದು", no:"ಇಲ್ಲ",
+ repeat:"ಪ್ರಶ್ನೆಯನ್ನು ಮತ್ತೆ ಕೇಳಿ", back:"ಹಿಂದೆ", loginTitle:"VitalCare ಲಾಗಿನ್",
+ email:"ಇಮೇಲ್", password:"ಪಾಸ್‌ವರ್ಡ್", emailVoice:"ಇಮೇಲ್ ಹೇಳಿ",
+ showPassword:"ಪಾಸ್‌ವರ್ಡ್ ತೋರಿಸಿ", loginButton:"ಲಾಗಿನ್",
+ signup:"ಖಾತೆ ರಚಿಸಿ", forgot:"ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿರಾ?",
+ questionAgain:"ಅರ್ಥವಾಗಲಿಲ್ಲ. ಹೌದು ಅಥವಾ ಇಲ್ಲ ಎಂದು ಹೇಳಿ.",
+ emailPrompt:"ನಿಮ್ಮ ಇಮೇಲ್ ಹೇಳಿ.", emailError:"ಇಮೇಲ್ ಗುರುತಿಸಲಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಹೇಳಿ.",
+ emailDone:"ಇಮೇಲ್ ನಮೂದಿಸಲಾಗಿದೆ. ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ.",
+ micError:"ಮೈಕ್ರೋಫೋನ್ ಅನುಮತಿ ನೀಡಿ.",
+ unsupported:"ಈ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆ ಲಭ್ಯವಿಲ್ಲ.",
+ loginNotice:"ಸುರಕ್ಷಿತ login backend ಸಂಪರ್ಕಿಸಬೇಕು."
+},
+ml: {
+ home:"ഹോം", about:"ഞങ്ങളെക്കുറിച്ച്", contact:"ബന്ധപ്പെടുക",
+ subtitle:"മെച്ചപ്പെട്ട ആരോഗ്യത്തിനായുള്ള സ്മാർട്ട് ആരോഗ്യ നിരീക്ഷണം",
+ chooseLanguage:"നിങ്ങളുടെ ഭാഷ തിരഞ്ഞെടുക്കുക", languageLabel:"ഭാഷ തിരഞ്ഞെടുക്കുക",
+ next:"അടുത്തത്", visionQuestion:"നിങ്ങൾക്ക് കാഴ്ചക്കുറവോ കാണാൻ ബുദ്ധിമുട്ടോ ഉണ്ടോ?",
+ sayYesNo:"അതെ അല്ലെങ്കിൽ ഇല്ല എന്ന് പറയുക.", yes:"അതെ", no:"ഇല്ല",
+ repeat:"ചോദ്യം വീണ്ടും കേൾക്കുക", back:"പിന്നോട്ട്", loginTitle:"VitalCare ലോഗിൻ",
+ email:"ഇമെയിൽ", password:"പാസ്‌വേഡ്", emailVoice:"ഇമെയിൽ പറയുക",
+ showPassword:"പാസ്‌വേഡ് കാണിക്കുക", loginButton:"ലോഗിൻ",
+ signup:"അക്കൗണ്ട് സൃഷ്ടിക്കുക", forgot:"പാസ്‌വേഡ് മറന്നോ?",
+ questionAgain:"മനസ്സിലായില്ല. അതെ അല്ലെങ്കിൽ ഇല്ല എന്ന് പറയുക.",
+ emailPrompt:"നിങ്ങളുടെ ഇമെയിൽ പറയുക.", emailError:"ഇമെയിൽ തിരിച്ചറിയാനായില്ല. വീണ്ടും പറയുക.",
+ emailDone:"ഇമെയിൽ ചേർത്തു. പാസ്‌വേഡ് നൽകുക.",
+ micError:"മൈക്രോഫോൺ അനുമതി നൽകുക.",
+ unsupported:"ഈ ബ്രൗസറിൽ ശബ്ദ തിരിച്ചറിയൽ ലഭ്യമല്ല.",
+ loginNotice:"സുരക്ഷിത login backend ബന്ധിപ്പിക്കണം."
+},
+bn: {
+ home:"হোম", about:"আমাদের সম্পর্কে", contact:"যোগাযোগ",
+ subtitle:"সুস্থ ভবিষ্যতের জন্য স্মার্ট স্বাস্থ্য পর্যবেক্ষণ",
+ chooseLanguage:"আপনার ভাষা নির্বাচন করুন", languageLabel:"ভাষা নির্বাচন করুন",
+ next:"পরবর্তী", visionQuestion:"আপনার কি দেখতে অসুবিধা হয়?",
+ sayYesNo:"হ্যাঁ অথবা না বলুন।", yes:"হ্যাঁ", no:"না",
+ repeat:"প্রশ্নটি আবার শুনুন", back:"পেছনে", loginTitle:"VitalCare লগইন",
+ email:"ইমেল ঠিকানা", password:"পাসওয়ার্ড", emailVoice:"ইমেল বলুন",
+ showPassword:"পাসওয়ার্ড দেখান", loginButton:"লগইন",
+ signup:"অ্যাকাউন্ট তৈরি করুন", forgot:"পাসওয়ার্ড ভুলে গেছেন?",
+ questionAgain:"বুঝতে পারিনি। হ্যাঁ অথবা না বলুন।",
+ emailPrompt:"আপনার ইমেল ঠিকানা বলুন।", emailError:"ইমেল বুঝতে পারিনি। আবার বলুন।",
+ emailDone:"ইমেল যোগ হয়েছে। পাসওয়ার্ড লিখুন।",
+ micError:"মাইক্রোফোনের অনুমতি দিন।",
+ unsupported:"এই ব্রাউজারে ভয়েস শনাক্তকরণ উপলব্ধ নয়।",
+ loginNotice:"নিরাপদ login backend সংযোগ করতে হবে।"
+},
+mr: {
+ home:"मुख्यपृष्ठ", about:"आमच्याबद्दल", contact:"संपर्क",
+ subtitle:"चांगल्या आरोग्यासाठी स्मार्ट आरोग्य निरीक्षण",
+ chooseLanguage:"तुमची भाषा निवडा", languageLabel:"भाषा निवडा",
+ next:"पुढे", visionQuestion:"तुम्हाला दिसण्यात अडचण येते का?",
+ sayYesNo:"हो किंवा नाही असे सांगा.", yes:"हो", no:"नाही",
+ repeat:"प्रश्न पुन्हा ऐका", back:"मागे", loginTitle:"VitalCare लॉगिन",
+ email:"ईमेल पत्ता", password:"पासवर्ड", emailVoice:"ईमेल सांगा",
+ showPassword:"पासवर्ड दाखवा", loginButton:"लॉगिन",
+ signup:"खाते तयार करा", forgot:"पासवर्ड विसरलात?",
+ questionAgain:"समजले नाही. हो किंवा नाही असे सांगा.",
+ emailPrompt:"तुमचा ईमेल पत्ता सांगा.", emailError:"ईमेल ओळखता आला नाही. पुन्हा सांगा.",
+ emailDone:"ईमेल भरला आहे. पासवर्ड टाका.",
+ micError:"मायक्रोफोनची परवानगी द्या.",
+ unsupported:"या ब्राउझरमध्ये आवाज ओळख उपलब्ध नाही.",
+ loginNotice:"सुरक्षित login backend जोडणे आवश्यक आहे."
+},
+gu: {
+ home:"હોમ", about:"અમારા વિશે", contact:"સંપર્ક",
+ subtitle:"સારા સ્વાસ્થ્ય માટે સ્માર્ટ આરોગ્ય દેખરેખ",
+ chooseLanguage:"તમારી ભાષા પસંદ કરો", languageLabel:"ભાષા પસંદ કરો",
+ next:"આગળ", visionQuestion:"શું તમને જોવામાં મુશ્કેલી છે?",
+ sayYesNo:"હા અથવા ના બોલો.", yes:"હા", no:"ના",
+ repeat:"પ્રશ્ન ફરી સાંભળો", back:"પાછળ", loginTitle:"VitalCare લૉગિન",
+ email:"ઈમેલ સરનામું", password:"પાસવર્ડ", emailVoice:"ઈમેલ બોલો",
+ showPassword:"પાસવર્ડ બતાવો", loginButton:"લૉગિન",
+ signup:"ખાતું બનાવો", forgot:"પાસવર્ડ ભૂલી ગયા?",
+ questionAgain:"સમજાયું નહીં. હા અથવા ના બોલો.",
+ emailPrompt:"તમારું ઈમેલ બોલો.", emailError:"ઈમેલ ઓળખી શકાયું નહીં. ફરી બોલો.",
+ emailDone:"ઈમેલ દાખલ થયું. પાસવર્ડ દાખલ કરો.",
+ micError:"માઇક્રોફોનની પરવાનગી આપો.",
+ unsupported:"આ બ્રાઉઝરમાં વોઇસ ઓળખ ઉપલબ્ધ નથી.",
+ loginNotice:"સુરક્ષિત login backend જોડવું જરૂરી છે."
+},
+pa: {
+ home:"ਮੁੱਖ ਪੰਨਾ", about:"ਸਾਡੇ ਬਾਰੇ", contact:"ਸੰਪਰਕ",
+ subtitle:"ਚੰਗੀ ਸਿਹਤ ਲਈ ਸਮਾਰਟ ਸਿਹਤ ਨਿਗਰਾਨੀ",
+ chooseLanguage:"ਆਪਣੀ ਭਾਸ਼ਾ ਚੁਣੋ", languageLabel:"ਭਾਸ਼ਾ ਚੁਣੋ",
+ next:"ਅੱਗੇ", visionQuestion:"ਕੀ ਤੁਹਾਨੂੰ ਦੇਖਣ ਵਿੱਚ ਮੁਸ਼ਕਲ ਹੈ?",
+ sayYesNo:"ਹਾਂ ਜਾਂ ਨਹੀਂ ਬੋਲੋ।", yes:"ਹਾਂ", no:"ਨਹੀਂ",
+ repeat:"ਸਵਾਲ ਦੁਬਾਰਾ ਸੁਣੋ", back:"ਪਿੱਛੇ", loginTitle:"VitalCare ਲਾਗਇਨ",
+ email:"ਈਮੇਲ ਪਤਾ", password:"ਪਾਸਵਰਡ", emailVoice:"ਈਮੇਲ ਬੋਲੋ",
+ showPassword:"ਪਾਸਵਰਡ ਦਿਖਾਓ", loginButton:"ਲਾਗਇਨ",
+ signup:"ਖਾਤਾ ਬਣਾਓ", forgot:"ਪਾਸਵਰਡ ਭੁੱਲ ਗਏ?",
+ questionAgain:"ਸਮਝ ਨਹੀਂ ਆਇਆ। ਹਾਂ ਜਾਂ ਨਹੀਂ ਬੋਲੋ.",
+ emailPrompt:"ਆਪਣਾ ਈਮੇਲ ਬੋਲੋ.", emailError:"ਈਮੇਲ ਪਛਾਣ ਨਹੀਂ ਸਕਿਆ। ਮੁੜ ਬੋਲੋ.",
+ emailDone:"ਈਮੇਲ ਭਰ ਦਿੱਤਾ ਗਿਆ ਹੈ। ਪਾਸਵਰਡ ਦਰਜ ਕਰੋ।",
+ micError:"ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ।",
+ unsupported:"ਇਸ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਵੌਇਸ ਪਛਾਣ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",
+ loginNotice:"ਸੁਰੱਖਿਅਤ login backend ਨਾਲ ਜੋੜਨਾ ਲਾਜ਼ਮੀ ਹੈ।"
+},
+or: {
+ home:"ମୁଖ୍ୟ ପୃଷ୍ଠା", about:"ଆମ ବିଷୟରେ", contact:"ଯୋଗାଯୋଗ",
+ subtitle:"ସୁସ୍ଥ ଭବିଷ୍ୟତ ପାଇଁ ସ୍ମାର୍ଟ ସ୍ୱାସ୍ଥ୍ୟ ନିରୀକ୍ଷଣ",
+ chooseLanguage:"ଆପଣଙ୍କ ଭାଷା ବାଛନ୍ତୁ", languageLabel:"ଭାଷା ବାଛନ୍ତୁ",
+ next:"ପରବର୍ତ୍ତୀ", visionQuestion:"ଆପଣଙ୍କର ଦୃଷ୍ଟି ସମସ୍ୟା ଅଛି କି?",
+ sayYesNo:"ହଁ କିମ୍ବା ନା କୁହନ୍ତୁ।", yes:"ହଁ", no:"ନା",
+ repeat:"ପ୍ରଶ୍ନ ପୁଣି ଶୁଣନ୍ତୁ", back:"ପଛକୁ", loginTitle:"VitalCare ଲଗଇନ୍",
+ email:"ଇମେଲ୍ ଠିକଣା", password:"ପାସୱାର୍ଡ", emailVoice:"ଇମେଲ୍ କୁହନ୍ତୁ",
+ showPassword:"ପାସୱାର୍ଡ ଦେଖାନ୍ତୁ", loginButton:"ଲଗଇନ୍",
+ signup:"ଖାତା ଖୋଲନ୍ତୁ", forgot:"ପାସୱାର୍ଡ ଭୁଲିଗଲେ?",
+ questionAgain:"ବୁଝିପାରିଲି ନାହିଁ। ହଁ କିମ୍ବା ନା କୁହନ୍ତୁ।",
+ emailPrompt:"ଆପଣଙ୍କ ଇମେଲ୍ କୁହନ୍ତୁ।", emailError:"ଇମେଲ୍ ଚିହ୍ନଟ ହେଲା ନାହିଁ। ପୁଣି କୁହନ୍ତୁ।",
+ emailDone:"ଇମେଲ୍ ଭରାଯାଇଛି। ପାସୱାର୍ଡ ଦିଅନ୍ତୁ।",
+ micError:"ମାଇକ୍ ଅନୁମତି ଦିଅନ୍ତୁ।",
+ unsupported:"ଏହି ବ୍ରାଉଜରରେ ଧ୍ୱନି ଚିହ୍ନଟ ଉପଲବ୍ଧ ନାହିଁ।",
+ loginNotice:"ସୁରକ୍ଷିତ login backend ସହ ଯୋଡ଼ିବା ଦରକାର।"
+},
+ur: {
+ home:"ہوم", about:"ہمارے بارے میں", contact:"رابطہ",
+ subtitle:"بہتر صحت کے لیے اسمارٹ صحت کی نگرانی",
+ chooseLanguage:"اپنی زبان منتخب کریں", languageLabel:"زبان منتخب کریں",
+ next:"اگلا", visionQuestion:"کیا آپ کو دیکھنے میں دشواری ہوتی ہے؟",
+ sayYesNo:"براہ کرم ہاں یا نہیں کہیں۔", yes:"ہاں", no:"نہیں",
+ repeat:"سوال دوبارہ سنیں", back:"واپس", loginTitle:"VitalCare لاگ اِن",
+ email:"ای میل پتہ", password:"پاس ورڈ", emailVoice:"ای میل بولیں",
+ showPassword:"پاس ورڈ دکھائیں", loginButton:"لاگ اِن",
+ signup:"اکاؤنٹ بنائیں", forgot:"پاس ورڈ بھول گئے؟",
+ questionAgain:"سمجھ نہیں آیا۔ ہاں یا نہیں کہیں۔",
+ emailPrompt:"اپنا ای میل بولیں۔", emailError:"ای میل سمجھ نہیں آیا۔ دوبارہ بولیں۔",
+ emailDone:"ای میل درج ہو گئی۔ پاس ورڈ درج کریں۔",
+ micError:"مائیکروفون کی اجازت دیں۔",
+ unsupported:"اس براؤزر میں آواز کی شناخت دستیاب نہیں۔",
+ loginNotice:"محفوظ login backend سے منسلک کرنا ضروری ہے۔"
+}
+};
+
+const locales = {
+ en:"en-IN", ta:"ta-IN", hi:"hi-IN", te:"te-IN",
+ kn:"kn-IN", ml:"ml-IN", bn:"bn-IN", mr:"mr-IN",
+ gu:"gu-IN", pa:"pa-IN", or:"or-IN", ur:"ur-PK"
+};
+
 const $ = id => document.getElementById(id);
+const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-const languageNames = {
-  en:"English",ta:"Tamil",hi:"Hindi",te:"Telugu",
-  kn:"Kannada",ml:"Malayalam",bn:"Bengali",mr:"Marathi",
-  gu:"Gujarati",pa:"Punjabi",or:"Odia",ur:"Urdu"
-};
+let lang = "en";
+let voiceEnabled = false;
+let recognition = null;
+let recognitionTask = null;
+let fontSize = 100;
 
-const locale = {
-  en:"en-IN",ta:"ta-IN",hi:"hi-IN",te:"te-IN",
-  kn:"kn-IN",ml:"ml-IN",bn:"bn-IN",mr:"mr-IN",
-  gu:"gu-IN",pa:"pa-IN",or:"or-IN",ur:"ur-PK"
-};
-
-const text = {
- en:{
-  subtitle:"Smart healthcare monitoring for a healthier tomorrow.",
-  languageHeading:"Choose your language",next:"Next",
-  question:"Are you blind or do you have difficulty seeing?",
-  hint:"Say Yes or No. You can also select a button.",
-  yes:"Yes",no:"No",repeat:"Repeat question",back:"Back",
-  login:"Login to VitalCare",email:"Email address",password:"Password",
-  show:"Show password",speakEmail:"🎙️ Speak email",
-  speakPassword:"🎙️ Speak password (avoid in public)",loginButton:"Login",
-  ask:"Please say your email address.",
-  welcome:"Welcome to VitalCare.",
-  voiceOn:"Voice assistance is on.",voiceOff:"Voice assistance is off.",
-  retry:"I couldn't recognize that. Please try again.",
-  denied:"Microphone permission denied. Allow microphone access in browser settings.",
-  unsupported:"Voice recognition is not supported. Please use an updated Chrome browser."
- },
- ta:{
-  subtitle:"Nalla aarokkiyathirkana smart health monitoring.",
-  languageHeading:"Ungal mozhiya therndhedunga",next:"Aduthu",
-  question:"Ungalukku paarvai kuraipaadu irukka?",
-  hint:"Aam allathu illai nu voice-la sollunga.",
-  yes:"Aam",no:"Illai",repeat:"Kelviyai meendum kelu",back:"Pinnal",
-  login:"VitalCare Login",email:"Email mugavari",password:"Password",
-  show:"Password kaattu",speakEmail:"🎙️ Email-ai sollunga",
-  speakPassword:"🎙️ Password sollunga (public place-la vendam)",loginButton:"Login",
-  ask:"Ungal email mugavariyai voice-la sollunga.",
-  welcome:"VitalCare-ku varaverkirom.",
-  voiceOn:"Voice assistance ON aagiyulladhu.",
-  voiceOff:"Voice assistance OFF aagiyulladhu.",
-  retry:"Puriyavillai. Meendum methuvaaga sollunga.",
-  denied:"Microphone permission allow pannunga.",
-  unsupported:"Indha browser-la voice recognition support illai. Updated Chrome use pannunga."
- },
- hi:{
-  subtitle:"बेहतर स्वास्थ्य के लिए स्मार्ट निगरानी",
-  languageHeading:"अपनी भाषा चुनें",next:"आगे",
-  question:"क्या आपको देखने में कठिनाई होती है?",
-  hint:"हाँ या नहीं बोलें।",yes:"हाँ",no:"नहीं",
-  repeat:"फिर से पूछें",back:"वापस",login:"VitalCare लॉगिन",
-  email:"ईमेल पता",password:"पासवर्ड",show:"पासवर्ड दिखाएँ",
-  speakEmail:"🎙️ ईमेल बोलें",speakPassword:"🎙️ पासवर्ड बोलें",
-  loginButton:"लॉगिन",ask:"अपना ईमेल पता बोलें।",
-  welcome:"VitalCare में आपका स्वागत है।",
-  voiceOn:"वॉइस सहायता चालू है।",voiceOff:"वॉइस सहायता बंद है।",
-  retry:"फिर से बोलें।",denied:"माइक्रोफ़ोन अनुमति दें।",
-  unsupported:"अपडेटेड Chrome इस्तेमाल करें।"
- }
-};
-
-// Other languages use English fallback until their complete translations
-// are added. Speech recognition locale is still selected for each language.
-let lang=localStorage.getItem("vc_lang")||"en";
-let voiceEnabled=localStorage.getItem("vc_voice")==="on";
-let currentStep=1;
-let recognition=null;
-let recognitionTask="";
-
-const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
-
-function tr(key){
-  return (text[lang] && text[lang][key]) || text.en[key] || key;
+function t(key) {
+  return translations[lang]?.[key] || translations.en[key] || key;
 }
 
-function say(message,after){
-  if(!("speechSynthesis" in window)){
-    if(after) after();
+function updateStatus(message) {
+  $("status").textContent = message;
+}
+
+function speak(message, done) {
+  if (!("speechSynthesis" in window)) {
+    if (done) done();
     return;
   }
+
   speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(message);
-  u.lang=locale[lang]||"en-IN";
-  u.rate=.9;
-  u.onend=()=>{if(after)after()};
-  speechSynthesis.speak(u);
+
+  const utterance = new SpeechSynthesisUtterance(message);
+  utterance.lang = locales[lang] || "en-IN";
+  utterance.rate = 0.88;
+
+  utterance.onend = () => {
+    if (done) done();
+  };
+
+  speechSynthesis.speak(utterance);
 }
 
-function applyLanguage(){
-  document.documentElement.lang=lang;
-  document.documentElement.dir=lang==="ur"?"rtl":"ltr";
-  $("subtitle").textContent=tr("subtitle");
-  $("languageHeading").textContent=tr("languageHeading");
-  $("nextLanguage").textContent=tr("next");
-  $("accessQuestion").textContent=tr("question");
-  $("accessHint").textContent=tr("hint");
-  $("yesButton").textContent=tr("yes");
-  $("noButton").textContent=tr("no");
-  $("repeatButton").textContent=tr("repeat");
-  $("backLanguage").textContent=tr("back");
-  $("backAccess").textContent=tr("back");
-  $("loginHeading").textContent=tr("login");
-  $("emailLabel").textContent=tr("email");
-  $("passwordLabel").textContent=tr("password");
-  $("showPassword").nextSibling.textContent=" "+tr("show");
-  $("emailVoice").textContent=tr("speakEmail");
-  $("passwordVoice").textContent=tr("speakPassword");
-  $("loginButton").textContent=tr("loginButton");
-  $("voiceToggle").textContent=voiceEnabled?"🔊 "+tr("voiceOn"):"🔈 "+tr("voiceOff");
-  localStorage.setItem("vc_lang",lang);
-  localStorage.setItem("vc_voice",voiceEnabled?"on":"off");
+function translatePage() {
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ur" ? "rtl" : "ltr";
+
+  document.querySelectorAll("[data-t]").forEach(element => {
+    const key = element.dataset.t;
+    if (translations[lang]?.[key]) {
+      element.textContent = translations[lang][key];
+    }
+  });
 }
 
-function showStep(n){
-  currentStep=n;
-  $("languageStep").classList.toggle("hidden",n!==1);
-  $("accessStep").classList.toggle("hidden",n!==2);
-  $("loginStep").classList.toggle("hidden",n!==3);
-  const focusId=n===1?"language":n===2?"yesButton":"email";
-  $(focusId).focus();
+function showPage(page) {
+  $("languagePage").classList.toggle("hidden", page !== "language");
+  $("visionPage").classList.toggle("hidden", page !== "vision");
+  $("loginPage").classList.toggle("hidden", page !== "login");
+
+  if (page === "language") $("language").focus();
+  if (page === "vision") $("yesButton").focus();
+  if (page === "login") $("email").focus();
 }
 
-function startListening(task){
-  if(!SpeechRecognition){
-    $("status").textContent=tr("unsupported");
-    say(tr("unsupported"));
+async function requestMicrophone() {
+  if (!navigator.mediaDevices?.getUserMedia) return true;
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    stream.getTracks().forEach(track => track.stop());
+    return true;
+  } catch {
+    updateStatus(t("micError"));
+    speak(t("micError"));
+    return false;
+  }
+}
+
+function startRecognition(task) {
+  if (!Recognition) {
+    updateStatus(t("unsupported"));
+    speak(t("unsupported"));
     return;
   }
-  recognitionTask=task;
-  if(!recognition){
-    recognition=new SpeechRecognition();
-    recognition.continuous=false;
-    recognition.interimResults=false;
-    recognition.maxAlternatives=1;
-    recognition.onresult=e=>{
-      const spoken=e.results[0][0].transcript.trim();
-      $("status").textContent="Heard: "+spoken;
-      const task=recognitionTask;
-      recognitionTask="";
-      if(task==="answer")handleYesNo(spoken);
-      if(task==="email")handleEmail(spoken);
-      if(task==="password")handlePassword(spoken);
+
+  recognitionTask = task;
+
+  try {
+    recognition = new Recognition();
+    recognition.lang = locales[lang] || "en-IN";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 3;
+
+    recognition.onresult = event => {
+      const spoken = event.results[0][0].transcript
+        .toLowerCase().trim();
+
+      const currentTask = recognitionTask;
+      recognitionTask = null;
+
+      if (currentTask === "vision") {
+        processVisionAnswer(spoken);
+      } else if (currentTask === "email") {
+        processEmail(spoken);
+      }
     };
-    recognition.onerror=e=>{
-      $("status").textContent=e.error==="not-allowed"?tr("denied"):tr("retry");
-      if(e.error==="not-allowed")say(tr("denied"));
+
+    recognition.onerror = event => {
+      recognitionTask = null;
+
+      if (event.error === "not-allowed") {
+        updateStatus(t("micError"));
+        speak(t("micError"));
+      } else if (task === "vision") {
+        askVisionQuestion();
+      } else if (task === "email") {
+        updateStatus(t("emailError"));
+        speak(t("emailError"));
+      }
     };
-  }
-  recognition.lang=locale[lang]||"en-IN";
-  try{
+
+    recognition.onend = () => {
+      // No automatic endless restart; avoid repeated microphone prompts.
+    };
+
+    updateStatus("🎙");
     recognition.start();
-    $("status").textContent="🎙️ Listening...";
-  }catch(e){
-    $("status").textContent="Microphone busy. Try again.";
+  } catch {
+    updateStatus(t("unsupported"));
   }
 }
 
-function askThenListen(message,task){
-  if(!SpeechRecognition){say(message);$("status").textContent=tr("unsupported");return;}
-  say(message,()=>startListening(task));
+async function askAndListen(message, task) {
+  const allowed = await requestMicrophone();
+  if (!allowed) return;
+
+  speak(message, () => startRecognition(task));
 }
 
-function handleYesNo(answer){
-  const a=answer.toLowerCase();
-  const yes=["yes","yeah","ஆம்","ஆமாம்","ஆமா","అవును","ಹೌದು","അതെ","हाँ","हां","হ্যাঁ","होय","હા","ਹਾਂ","ହଁ","ہاں"];
-  const no=["no","nope","இல்லை","இல்ல","కాదు","ಇಲ್ಲ","ഇല്ല","नहीं","না","नाही","ના","ਨਹੀਂ","ନା","نہیں"];
-  if(yes.some(w=>a.includes(w))){
-    chooseAccess(true);
-  }else if(no.some(w=>a.includes(w))){
-    chooseAccess(false);
-  }else{
-    askThenListen(tr("retry")+" "+tr("yes")+" "+tr("no"),"answer");
+function startQuestion() {
+  lang = $("language").value;
+  translatePage();
+  showPage("vision");
+
+  askAndListen(
+    t("visionQuestion") + " " + t("sayYesNo"),
+    "vision"
+  );
+}
+
+function askVisionQuestion() {
+  askAndListen(
+    t("questionAgain") + " " + t("visionQuestion"),
+    "vision"
+  );
+}
+
+function processVisionAnswer(answer) {
+  const yesWords = [
+    "yes", "yeah", "yep", "ஆம்", "ஆமாம்", "ஆமா",
+    "అవును", "ಹೌದು", "അതെ", "हाँ", "हां", "জি",
+    "হ্যাঁ", "होय", "હા", "ਹਾਂ", "ହଁ", "ہاں"
+  ];
+
+  const noWords = [
+    "no", "nope", "இல்லை", "இல்ல", "కాదు",
+    "ಇಲ್ಲ", "ഇല്ല", "नहीं", "नहि", "না", "नाही",
+    "ના", "ਨਹੀਂ", "ନା", "نہیں"
+  ];
+
+  const normalized = answer.replace(/[.,!?]/g, "").trim();
+
+  if (yesWords.some(word => normalized === word ||
+      normalized.startsWith(word + " "))) {
+    enableAccessibility();
+  } else if (noWords.some(word => normalized === word ||
+      normalized.startsWith(word + " "))) {
+    disableAccessibility();
+  } else {
+    askVisionQuestion();
   }
 }
 
-function chooseAccess(yes){
-  voiceEnabled=yes;
-  localStorage.setItem("vc_visual_assistance",yes?"yes":"no");
-  applyLanguage();
-  showStep(3);
-  if(yes){
-    say(tr("welcome")+" "+tr("ask"),()=>startListening("email"));
-  }else{
-    say(tr("voiceOff"));
-  }
+function enableAccessibility() {
+  voiceEnabled = true;
+  localStorage.setItem("vc_voice", "on");
+  localStorage.setItem("vc_visual_assistance", "yes");
+
+  showPage("login");
+  speak(t("emailPrompt"), () => startRecognition("email"));
 }
 
-function handleEmail(raw){
-  let email=raw.toLowerCase().trim();
-  email=email.replace(/\s+at\s+/g,"@")
-             .replace(/\s+dot\s+/g,".")
-             .replace(/\s+underscore\s+/g,"_")
-             .replace(/\s+/g,"");
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    $("email").value=email;
-    say(tr("retry")+" "+tr("ask"),()=>startListening("email"));
+function disableAccessibility() {
+  voiceEnabled = false;
+  localStorage.setItem("vc_voice", "off");
+  localStorage.setItem("vc_visual_assistance", "no");
+
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  showPage("login");
+  updateStatus("");
+}
+
+function processEmail(spoken) {
+  let email = spoken.toLowerCase().trim();
+
+  email = email
+    .replace(/\s+at\s+the\s+rate\s+/g, "@")
+    .replace(/\s+at\s+/g, "@")
+    .replace(/\s+dot\s+/g, ".")
+    .replace(/\s+underscore\s+/g, "_")
+    .replace(/\s+dash\s+/g, "-")
+    .replace(/\s/g, "");
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    updateStatus(t("emailError"));
+    speak(t("emailError"), () => startRecognition("email"));
     return;
   }
-  $("email").value=email;
-  $("email").dispatchEvent(new Event("input",{bubbles:true}));
-  $("status").textContent="Email entered.";
-  say("Email entered. Please enter your password.");
+
+  $("email").value = email;
+  updateStatus(t("emailDone"));
+  speak(t("emailDone"));
   $("password").focus();
 }
 
-function handlePassword(raw){
-  $("password").value=raw;
-  $("password").dispatchEvent(new Event("input",{bubbles:true}));
-  $("status").textContent="Password entered. It will not be read aloud.";
-  say("Password entered.");
+$("languageNext").addEventListener("click", startQuestion);
+
+$("language").addEventListener("change", () => {
+  lang = $("language").value;
+  translatePage();
+});
+
+$("yesButton").addEventListener("click", enableAccessibility);
+$("noButton").addEventListener("click", disableAccessibility);
+
+$("repeatButton").addEventListener("click", askVisionQuestion);
+
+$("backLanguage").addEventListener("click", () => {
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  showPage("language");
+});
+
+$("backVision").addEventListener("click", () => showPage("vision"));
+
+$("speakEmail").addEventListener("click", async () => {
+  await askAndListen(t("emailPrompt"), "email");
+});
+
+$("showPassword").addEventListener("change", () => {
+  $("password").type = $("showPassword").checked ? "text" : "password";
+});
+
+$("loginForm").addEventListener("submit", event => {
+  event.preventDefault();
+  $("loginMessage").textContent = t("loginNotice");
+
+  if (voiceEnabled) speak(t("loginNotice"));
+});
+
+/* Restore the user's language selection. */
+const savedLanguage = localStorage.getItem("vc_lang");
+if (savedLanguage && translations[savedLanguage]) {
+  lang = savedLanguage;
+  $("language").value = savedLanguage;
 }
 
-$("language").value=lang;
-$("language").addEventListener("change",()=>{
-  lang=$("language").value;
-  applyLanguage();
-});
-$("nextLanguage").addEventListener("click",()=>{
-  lang=$("language").value;
-  applyLanguage();
-  showStep(2);
-  askThenListen(
-    tr("question")+" "+tr("hint")+" "+tr("yes")+" "+tr("no"),
-    "answer"
-  );
-});
-$("yesButton").addEventListener("click",()=>chooseAccess(true));
-$("noButton").addEventListener("click",()=>chooseAccess(false));
-$("repeatButton").addEventListener("click",()=>{
-  askThenListen(tr("question")+" "+tr("hint"),"answer");
-});
-$("backLanguage").addEventListener("click",()=>showStep(1));
-$("backAccess").addEventListener("click",()=>showStep(2));
-
-$("emailVoice").addEventListener("click",()=>{
-  askThenListen(tr("ask"),"email");
-});
-$("passwordVoice").addEventListener("click",()=>{
-  askThenListen("Please say your password.", "password");
-});
-$("voiceToggle").addEventListener("click",()=>{
-  voiceEnabled=!voiceEnabled;
-  applyLanguage();
-  say(voiceEnabled?tr("voiceOn"):tr("voiceOff"));
-});
-$("readPage").addEventListener("click",()=>{
-  voiceEnabled=true;
-  applyLanguage();
-  const section=currentStep===1?"languageStep":currentStep===2?"accessStep":"loginStep";
-  say($(section).innerText);
-});
-$("fontDown").addEventListener("click",()=>document.body.classList.remove("big"));
-$("fontUp").addEventListener("click",()=>document.body.classList.add("big"));
-$("contrast").addEventListener("click",()=>document.body.classList.toggle("contrast"));
-$("showPassword").addEventListener("change",()=>{
-  $("password").type=$("showPassword").checked?"text":"password";
+$("language").addEventListener("change", () => {
+  localStorage.setItem("vc_lang", $("language").value);
 });
 
-$("loginForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  // Demo UI only: connect this form to your secure backend for real login.
-  $("loginMessage").textContent=
-    "Login UI ready. Connect a secure backend to authenticate users.";
-  say($("loginMessage").textContent);
-});
-
-applyLanguage();
-
-if(localStorage.getItem("vc_visual_assistance")==="yes"){
-  voiceEnabled=true;
-  applyLanguage();
-  showStep(3);
-  $("status").textContent="Voice assistance enabled. Press Speak email to grant microphone access.";
-}else{
-  showStep(1);
-}
+translatePage();
+showPage("language");
 </script>
 </body>
 </html>
